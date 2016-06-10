@@ -5,20 +5,22 @@ This is an angular project which uses two other Anecka projects to show case the
 ## Installation
 You can either clone/download this repo.
 
+One you have the project installed locally, you need to run some npm and gulp commands to get all of your assets set up properly.
 
-1. Run this to install all npm modules.
+
+1. **Install all npm modules.**
 
 	```
 	$ npm install
 	```
 
-2. Run this to install bower components.
+2. **Install bower components.**
 
 	```
 	$ gulp bower
 	```
 
-3. With all dependencies installed we can now start up 	the server and the watchers.
+3. **With all dependencies installed we can now start up 	the server and the watchers.**
 
 	```
 	$ gulp
