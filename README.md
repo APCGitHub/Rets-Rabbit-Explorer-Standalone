@@ -3,15 +3,8 @@
 This is an angular project which uses two other Anecka projects to show case the Rets Rabbit API explorer
 
 ## Installation
-You can either clone/download this repo or grab the package on bower.
+You can either clone/download this repo.
 
-```
-$ bower install rets-rabbit-explorer-standalone
-``` 
-*Once you've got the project pulled down on your machine you'll need to run some npm commands to get your assets all set up.*
-
-***
-####NPM & Gulp
 
 1. Run this to install all npm modules.
 
