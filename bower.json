@@ -1,12 +1,20 @@
 {
-  "name": "angular-template",
-  "description": "This project is a boilerplate setup for any Anecka/CodingClinton Angular project.",
+  "name": "rets-rabbit-explorer-standalone",
+  "description": "This is an angular project which uses two other Anecka projects to show case a working Rets Rabbit API explorer.",
   "main": "",
   "authors": [
-    "Andrew Clinton <ddrew.clinton@gmail.com>"
+    "Andrew Clinton <aclinton@anecka.com>"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Anecka/Rets-Rabbit-Explorer-Standalone.git"
+  },
   "license": "MIT",
   "keywords": [
+    "rets",
+    "reso",
+    "datadictionary",
+    "realstate",
     "angular",
     "bower",
     "bootstrap",
@@ -14,8 +22,7 @@
     "node"
   ],
   "moduleType": [],
-  "homepage": "",
-  "private": true,
+  "homepage": "https://github.com/Anecka/Rets-Rabbit-Explorer-Standalone",
   "ignore": [
     "**/.*",
     "node_modules",
