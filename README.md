@@ -31,7 +31,6 @@ You can either clone/download this repo.
 	```
 	
 ##Next Steps
-***
 
 Congrats! You have successfully installed the Retsrabbit API Explorer standalone project.
 
