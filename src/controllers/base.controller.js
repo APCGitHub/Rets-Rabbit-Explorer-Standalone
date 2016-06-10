@@ -8,6 +8,7 @@
 
     function Controller($scope, $window, Config, AuthFactory) {
     	var vm = this;
+
         $scope.siteName = Config.siteName;
 
     	init();
@@ -19,10 +20,9 @@
 
             if(token === 'undefined' || token == null || token === ''){
                 AuthFactory.getToken().then(function (res){
-                    token = res.access_token;
-                    $window.localStorage.setItem('token', token);
+                    console.log(res);
                 }, function (err){
-                    console.log('here: ' + err);
+                    console.log(err);
                 });
             }
     	}
