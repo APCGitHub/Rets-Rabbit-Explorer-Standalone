@@ -5,3 +5,14 @@
 html {
 	color: $blue;
 }
+
+body {
+	padding-top: 50px;
+}
+
+.navbar-brand {
+	img {
+		display:inline-block;
+		margin-right:10px;
+	}
+}
