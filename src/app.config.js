@@ -8,8 +8,8 @@
 
     function Config($stateProvider, $urlRouterProvider, ApiProvider) {
         ApiProvider.setBaseUrl("https://stage.retsrabbit.com/");
-        ApiProvider.setClientId("KVucYNZm9pMWRgsPhD1u5pXV0N6CgLpRHeHPBpZq");
-        ApiProvider.setClientSecret("22TiP0Ffs7UAQHfZrvynlgRLRhSFeazDmHvFruoW");
+        ApiProvider.setClientId("retsrabbit");
+        ApiProvider.setClientSecret("retsrabbit");
 
         $stateProvider
             .state('app', {
@@ -18,12 +18,12 @@
                 template: '<div ui-view></div>',
                 abstract: true
             })
-            .state('app.home', {
-            	url: '/home',
+            .state('app.explorer', {
+            	url: '/explorer',
             	controller: 'HomeCtrl as Home',
             	templateUrl: 'templates/home.html'
             });
 
-        $urlRouterProvider.otherwise('/home');
+        $urlRouterProvider.otherwise('/explorer');
     }
 })();

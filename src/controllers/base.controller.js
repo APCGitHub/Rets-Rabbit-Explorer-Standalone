@@ -15,7 +15,7 @@
 
     	function init () {
             var token = $window.localStorage.getItem('token');
-            console.log('Init the base controller.');
+            console.log('Init the base controller. Token: ' + token);
     		vm.data = {};
 
             if(token === 'undefined' || token == null || token === ''){
