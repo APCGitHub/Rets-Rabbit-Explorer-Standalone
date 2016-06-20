@@ -30,6 +30,7 @@ var config = {
             files: [
                 './node_modules/angular/angular.min.js', 
                 './node_modules/angular-ui-router/release/angular-ui-router.min.js',
+                './bower_components/angular-animate/angular-animate.min.js',
                 './bower_components/rets-rabbit-angular/dist/rets-rabbit-angular.min.js',
                 './bower_components/rr-api-explorer/dist/rr-explorer-2.min.js'
             ],
