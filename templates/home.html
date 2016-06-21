@@ -1,13 +1,49 @@
-<div class="row">
-	<div class="col-sm-12">
-		<api-explorer></api-explorer>
-	</div>
+<div class="jumbotron">
+    <h3>Example Queries <button class="right btn btn-info" data-target="#demo-queries" data-toggle="collapse">Toggle</button></h3>
+    <p>Test out the API with these prebuilt queries!</p>
+    <div class="row collapse in" id="demo-queries">
+        <div class="col-sm-3" ng-repeat="query in Home.data.queries">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{query.title}}</h3>
+                </div>
+                <div class="panel-body">
+                    {{query.description}}
+                    <br>
+                    <br>
+                    <a href="#explorer-box" class="btn btn-success" du-smooth-scroll ng-click="Home.fillQuery(query)">Try it out</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div id="metadata-tab">
-	<div class="meta-handle">
-		Metadata
-	</div>
-	<div class="meta-content-wrapper">
-
-	</div>
+<div class="row">
+    <div class="col-sm-12" id="explorer-box">
+        <div api-explorer search="Home.data.fillQuery" loader="'public/img/default.gif'"></div>
+    </div>
+</div>
+<div class="sidebar metadata" ng-hide="Home.data.metadata.hidden">
+    <div class="handle" ng-click="Home.toggleMeta()">
+        Fields
+    </div>
+    <div class="sidebar-content-wrapper">
+        <div class="field-search">
+            <input type="text" ng-model="Home.data.metadata.search" ng-change="Home.filterMeta()" placeholder="Search..." class="form-control">
+        </div>
+        <div class="field-list">
+            <ul>
+                <li ng-repeat="field in Home.data.metadata.fields | orderBy: name">
+                    {{field.name}}:<span>{{field.type}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="sidebar query-info" ng-hide="Home.data.query_info.hidden">
+	<div class="handle" ng-click="Home.toggleQueryInfo()">
+        Query
+    </div>
+    <div class="sidebar-content-wrapper">
+        
+    </div>
 </div>

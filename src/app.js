@@ -1,6 +1,8 @@
 (function () {
 	'use strict';
 	angular.module('app', [
+		'ngAnimate',
+		'duScroll',
 		'rets-rabbit-angular',
 	  	'rr.api.v2.explorer',
 		'ui.router',
