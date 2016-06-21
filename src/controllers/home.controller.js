@@ -4,9 +4,9 @@
         .module('app.controller.home', [])
         .controller('HomeCtrl', Controller);
 
-    Controller.$inject = ['$scope', '$window', 'MetadataFactory', 'QueryFactory'];
+    Controller.$inject = ['$scope', '$window', '$timeout', 'MetadataFactory', 'QueryFactory'];
 
-    function Controller($scope, $window, MetadataFactory, QueryFactory) {
+    function Controller($scope, $window, $timeout, MetadataFactory, QueryFactory) {
     	var vm = this;
 
     	init();
@@ -16,7 +16,7 @@
     		vm.data = {
                 metadata: {
                     search: '',
-                    hidden: false,
+                    hidden: true,
                     fields: MetadataFactory.fields()
                 },
                 query_info: {
@@ -32,6 +32,10 @@
             vm.fillQuery = _fillQuery;
 
             vm.toggleQueryInfo = _toggleQueryInfo;
+
+            $timeout(function () {
+                vm.data.metadata.hidden = false;
+            }, 500);
     	}
 
         /* --- FUNCTIONS --- */
