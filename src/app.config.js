@@ -20,7 +20,7 @@
             })
             .state('app.explorer', {
             	url: '/explorer',
-            	controller: 'HomeCtrl as Home',
+            	controller: 'ExplorerCtrl as Explorer',
             	templateUrl: 'templates/home.html'
             });
 

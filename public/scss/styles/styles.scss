@@ -28,6 +28,8 @@ body {
     background: $orange-darker;
 }
 
+/* --- SIDEBAR --- */
+
 .sidebar {
     position: fixed;
     right: 0;
@@ -101,10 +103,13 @@ body {
         }
         .field-search {
             position: relative;
+            padding-left: 10px;
+            padding-right: 5px;
         }
         ul {
             padding-left: 12px;
-            padding-right: 2px;
+            padding-bottom: 15px;
+            padding-right: 8px;
             color: white;
             list-style-type: none;
             li {
