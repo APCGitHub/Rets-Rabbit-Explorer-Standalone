@@ -3,8 +3,7 @@
     <p>Test out the API with these prebuilt queries!</p>
     <div class="row collapse in" id="demo-queries">
         <div ng-repeat="query in Explorer.data.queries">
-            <div class="clearfix" ng-if="$index % 4 == 0"></div>
-            <div class="col-sm-3">
+            <div class="col-sm-4 col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{query.title}}</h3>
@@ -26,7 +25,7 @@
     </div>
 </div>
 <div class="sidebar metadata" ng-hide="Explorer.data.metadata.hidden">
-    <div class="handle" ng-click="Explorer.toggleMeta()">
+    <div class="handle" ng-click="Explorer.toggleMeta()" ng-class="{open: !Explorer.data.metadata.hidden}">
         Fields
     </div>
     <div class="sidebar-content-wrapper">
@@ -43,9 +42,47 @@
     </div>
 </div>
 <div class="sidebar query-info" ng-hide="Explorer.data.query_info.hidden">
-    <div class="handle" ng-click="Explorer.toggleQueryInfo()">
+    <div class="handle" ng-click="Explorer.toggleQueryInfo()" ng-class="{open: !Explorer.data.query_info.hidden}">
         Query
     </div>
     <div class="sidebar-content-wrapper">
+        <h4 class="text-center">Parameters</h4>
+        <h5 class="text-center text-white">Read the full <a href="http://retsrabbit.com/docs" target="_blank">docs</a></h5>
+        <hr>
+        <div class="scrollable">
+            <ul>
+                <li>
+                    <div class="filter-type">$select:</div>
+                    <p>Occasionally you don't want to return all of the data available for a resource. You can use the $select option to limit the fields that are returned for a request.</p>
+                </li>
+                <li>
+                    <div class="filter-type">$filter:</div>
+                    <p>Filtering properties by field values can be accomplished using the $filter option. All of the names in the $filter option are case-sensitive and match the name of the fields provided by the property resource.</p>
+                    <div class="filter-type">options:</div>
+                    <ul>
+                        <li>eq : equals</li>
+                        <li>lt : less than</li>
+                        <li>le : less than or equals</li>
+                        <li>gt : greater than</li>
+                        <li>ne : not equals</li>
+                        <li>and</li>
+                        <li>or</li>
+                        <li>not</li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="filter-type">$orderby:</div>
+                    <p>You can sort listings using the $orderby option. Just specify the field and the direction of the sort.</p>
+                </li>
+                <li>
+                    <div class="filter-type">$top:</div>
+                    <p>Designates the maximum number of matching items returned.</p>
+                </li>
+                <li>
+                    <div class="filter-type">$skip:</div>
+                    <p>Designates the number of matching items to omit before returning any items.</p>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

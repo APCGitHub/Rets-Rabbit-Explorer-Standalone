@@ -62,7 +62,7 @@
                 }
             }, {
                 title: 'Date Filtering',
-                description: 'This query gets properties listed in June 2016.',
+                description: 'This query gets properties listed in June 2016 by the ListingContractDate field.',
                 query: {
                     select: 'ListingId, ListPrice, ListingContractDate',
                     filter: [
