@@ -17,7 +17,7 @@
                 title: 'Equals Comparison',
                 description: 'Get properties where the Listing Agent\'s last name (field ListAgentLastName) is \'Smith\' (case sensitive).',
                 query: {
-                    select: 'ListingId, ListPrice, ListAgentFirstName',
+                    select: 'ListingId, ListPrice, ListAgentFirstName, ListAgentLastName',
                     filter: [{value: 'ListAgentLastName eq \'Smith\'', join: 'and'}],
                     orderby: [],
                     top: '',
