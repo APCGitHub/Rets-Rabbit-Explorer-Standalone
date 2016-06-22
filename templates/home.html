@@ -1,11 +1,13 @@
 <div class="jumbotron">
-    <h3>Example Queries 
-    	<button class="right btn btn-info" ng-click="Explorer.data.queriesCollapsed = !Explorer.data.queriesCollapsed">
-    		<span ng-show="Explorer.data.queriesCollapsed">Show</span>
-    		<span ng-hide="Explorer.data.queriesCollapsed">Hide</span>
-    	</button>
-    </h3>
-    <p>Test out the API with these prebuilt queries!</p>
+	<div id="tutorial-example-queries">
+	    <h3>Example Queries 
+	    	<button class="right btn btn-info" ng-click="Explorer.data.queriesCollapsed = !Explorer.data.queriesCollapsed">
+	    		<span ng-show="Explorer.data.queriesCollapsed">Show</span>
+	    		<span ng-hide="Explorer.data.queriesCollapsed">Hide</span>
+	    	</button>
+	    </h3>
+	    <p>Test out the API with these prebuilt queries!</p>
+    </div>
     <div class="row collapse in" uib-collapse="Explorer.data.queriesCollapsed">
         <div ng-repeat="query in Explorer.data.queries">
             <div class="col-sm-4 col-xs-12">
@@ -30,7 +32,7 @@
     </div>
 </div>
 <div class="sidebar metadata" ng-hide="Explorer.data.metadata.hidden">
-    <div class="handle" ng-click="Explorer.toggleMeta()" ng-class="{open: !Explorer.data.metadata.hidden}">
+    <div class="handle" id="tutorial-fields" ng-click="Explorer.toggleMeta()" ng-class="{open: !Explorer.data.metadata.hidden}">
         Fields
     </div>
     <div class="sidebar-content-wrapper">
@@ -47,7 +49,7 @@
     </div>
 </div>
 <div class="sidebar query-info" ng-hide="Explorer.data.query_info.hidden">
-    <div class="handle" ng-click="Explorer.toggleQueryInfo()" ng-class="{open: !Explorer.data.query_info.hidden}">
+    <div class="handle" id="tutorial-query-info" ng-click="Explorer.toggleQueryInfo()" ng-class="{open: !Explorer.data.query_info.hidden}">
         Query
     </div>
     <div class="sidebar-content-wrapper">
@@ -89,5 +91,10 @@
                 </li>
             </ul>
         </div>
+    </div>
+</div>
+<div class="sidebar tutorial" ng-hide="Explorer.data.tutoral.hidden">
+    <div class="handle" ng-click="Explorer.startTutorial()">
+        Tutorial
     </div>
 </div>

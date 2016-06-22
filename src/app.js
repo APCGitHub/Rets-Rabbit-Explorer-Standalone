@@ -3,6 +3,8 @@
 	angular.module('app', [
 		'ngAnimate',
 		'ui.bootstrap',
+		'ngDisableScroll',
+		'ng-walkthrough',
 		'duScroll',
 		'rets-rabbit-angular',
 	  	'rr.api.v2.explorer',

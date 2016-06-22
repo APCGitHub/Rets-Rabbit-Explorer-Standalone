@@ -71,10 +71,6 @@ body {
         position: absolute;
         -webkit-transition: all 0.2s ease;
         transition: all 0.2s ease;
-
-        &.open {
-            background-color: $blue-darkest;
-        }
     }
     .handle:hover {
         box-shadow: 0 0 5px black;
@@ -101,6 +97,10 @@ body {
 .query-info {
     top: 100px;
     background: $orange-primary;
+    z-index: 9;
+    hr {
+        margin-bottom: 0;
+    }
     .handle {
         background: $orange-primary;
         width: 80px;
@@ -110,7 +110,6 @@ body {
             background-color: $orange-darker;
         }
     }
-    z-index: 9;
 
     .sidebar-content-wrapper {
         width:100%;
@@ -150,6 +149,10 @@ body {
         background: $dark-blue;
         width: 80px;
         left: -80px;
+
+        &.open {
+            background-color: $blue-darkest;
+        }
     }
     .sidebar-content-wrapper {
         .field-list {
@@ -187,8 +190,31 @@ body {
     }
 }
 
+.tutorial {
+    top: 150px;
+    background: $dark-blue;
+    z-index: 8;
+    .handle {
+        background: $dark-blue;
+        width: 80px;
+        left: -80px;
+    }
+}
+
 .scrollable {
     width: 100%;
     height: 100%;
     overflow-y:scroll;
+}
+
+.walkthrough-element {
+    &.walkthrough-text {
+        background-color: transparent !important;
+        white-space: pre-wrap;
+        font-size:1.3em;
+    }
+}
+
+.walkthrough-background {
+    
 }
