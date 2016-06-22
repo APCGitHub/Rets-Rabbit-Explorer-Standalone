@@ -20,6 +20,7 @@ var config = {
         sassImportPath: './public/scss/imports/',
         destCss: './public/css',
         bootstrapPath: './bower_components/bootstrap-sass/assets/stylesheets/',
+        bootstrapAngularPath: './bower_components/angular-bootstrap/',
         fontawesomePath: './bower_components/font-awesome/scss/'
     },
     js: {
@@ -33,7 +34,9 @@ var config = {
                 './bower_components/angular-animate/angular-animate.min.js',
                 './bower_components/rets-rabbit-angular/dist/rets-rabbit-angular.min.js',
                 './bower_components/rr-api-explorer/dist/rr-explorer-2.min.js',
-                './bower_components/angular-scroll/angular-scroll.min.js'
+                './bower_components/angular-scroll/angular-scroll.min.js',
+                './bower_components/angular-bootstrap/ui-bootstrap.min.js',
+                './bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js'
             ],
             dist: './app/dist/all-angular.min.js'
         }
@@ -107,6 +110,11 @@ gulp.task('clean:dist', function() {
             read: false
         })
         .pipe(rm())
+});
+
+gulp.task('css-copy-vendor', function () {
+    return gulp.src(config.css.bootstrapAngularPath  + '*.css')
+        .pipe(gulp.dest(config.css.destCss));
 });
 
 gulp.task('css-dev', function() {
