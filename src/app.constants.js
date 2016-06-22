@@ -4,7 +4,7 @@
         .module('app.constants', [])
         .constant('Config', (function Const() {
             var constant = {
-                siteName: 'Test'
+                siteName: 'Rets Rabbit'
             };
             return constant;
         })());
