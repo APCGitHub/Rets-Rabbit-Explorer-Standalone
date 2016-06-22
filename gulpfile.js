@@ -117,7 +117,7 @@ gulp.task('css-copy-vendor', function () {
         .pipe(gulp.dest(config.css.destCss));
 });
 
-gulp.task('css-dev', function() {
+gulp.task('css-dev', ['css-copy-vendor'], function() {
     return gulp.src([config.css.sassPath + '*.scss']) 
         .pipe(plumber())
         .pipe(sass({ 
@@ -132,7 +132,7 @@ gulp.task('css-dev', function() {
         .pipe(connect.reload());
 });
 
-gulp.task('css-prod', function() {
+gulp.task('css-prod', ['css-copy-vendor'], function() {
     return gulp.src([config.css.sassPath + '*.scss'])
         .pipe(plumber())
         .pipe(sass({
