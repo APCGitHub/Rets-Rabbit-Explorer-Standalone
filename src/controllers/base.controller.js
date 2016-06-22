@@ -13,6 +13,7 @@
 
     	function init () {
             var token = $window.localStorage.getItem('token');
+            var did_tutorial = $window.localStorage.getItem('finished_tutorial');
 
     		$scope.data = {
                 tutorial: {
@@ -32,6 +33,13 @@
                 });
             }
 
+            if(did_tutorial === 'undefined' || did_tutorial == null || did_tutorial === ''){
+                $document.scrollTopAnimated(0, 200).then(function() {
+                    $scope.data.tutorial.active = true;
+                    $scope.data.tutorial.example_queries = true;
+                });
+            }
+
             vm.showFieldsTutorial = _showFieldsTutorial;
             vm.showQueryInfoTutorial = _showQueryInfoTutorial;
             vm.finishedTutorial = _finishedTutorial;
@@ -47,6 +55,7 @@
 
         function _finishedTutorial() {
             $scope.data.tutorial.active = false;
+            $window.localStorage.setItem('finished_tutorial', true);
         }
     }
 })();
