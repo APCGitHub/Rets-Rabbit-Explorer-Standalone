@@ -2,6 +2,7 @@
 	'use strict';
 	angular.module('app', [
 		'ngAnimate',
+		'ui.bootstrap',
 		'duScroll',
 		'rets-rabbit-angular',
 	  	'rr.api.v2.explorer',

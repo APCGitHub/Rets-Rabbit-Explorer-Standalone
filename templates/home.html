@@ -1,7 +1,12 @@
 <div class="jumbotron">
-    <h3>Example Queries <button class="right btn btn-info" data-target="#demo-queries" data-toggle="collapse">Toggle</button></h3>
+    <h3>Example Queries 
+    	<button class="right btn btn-info" ng-click="Explorer.data.queriesCollapsed = !Explorer.data.queriesCollapsed">
+    		<span ng-show="Explorer.data.queriesCollapsed">Show</span>
+    		<span ng-hide="Explorer.data.queriesCollapsed">Hide</span>
+    	</button>
+    </h3>
     <p>Test out the API with these prebuilt queries!</p>
-    <div class="row collapse in" id="demo-queries">
+    <div class="row collapse in" uib-collapse="Explorer.data.queriesCollapsed">
         <div ng-repeat="query in Explorer.data.queries">
             <div class="col-sm-4 col-xs-12">
                 <div class="panel panel-default">

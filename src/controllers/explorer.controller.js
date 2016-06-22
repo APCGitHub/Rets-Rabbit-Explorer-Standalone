@@ -22,6 +22,7 @@
                 query_info: {
                     hidden: true
                 },
+                queriesCollapsed: false,
                 queries: QueryFactory.queries(),
                 fillQuery: null
             };
