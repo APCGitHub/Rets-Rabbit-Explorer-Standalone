@@ -51,6 +51,10 @@
         }
 
         function _toggleMeta() {
+            if(vm.data.query_info.hidden = true){
+                vm.data.query_info.hidden = false;
+            }
+
             vm.data.metadata.hidden = !vm.data.metadata.hidden;
             //do other stuff if necessary
         }
