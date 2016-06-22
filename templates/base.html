@@ -1,0 +1,39 @@
+<walkthrough 
+    walkthrough-type="transparency" 
+    focus-element-id="tutorial-example-queries" 
+    main-caption="We have a list of serveral pre-constructed queries to help you learn how this version of the Rets Rabbit API works. Click the 'Try it out' button when you are ready try a query." 
+    force-caption-location="BOTTOM"
+    is-active="data.tutorial.example_queries" 
+    use-button=true
+    on-walkthrough-hide="Base.showFieldsTutorial()">
+</walkthrough>
+<walkthrough 
+    walkthrough-type="transparency" 
+    focus-element-id="tutorial-fields" 
+    main-caption="Click this tab to view and search the available fields for querying." 
+    force-caption-location="BOTTOM"
+    icon="arrow"
+    icon-padding-left="30"
+    icon-padding-top="0"
+    is-active="data.tutorial.fields" 
+    use-button=true
+    on-walkthrough-hide="Base.showQueryInfoTutorial()">
+</walkthrough>
+<walkthrough 
+    walkthrough-type="transparency" 
+    focus-element-id="tutorial-query-info" 
+    main-caption="Click this tab to read up on how the powerful new querying language works." 
+    force-caption-location="BOTTOM"
+    icon="arrow"
+    icon-padding-left="30"
+    icon-padding-top="0"
+    is-active="data.tutorial.query_info" 
+    use-button=true
+    on-walkthrough-hide="Base.finishedTutorial()">
+</walkthrough>
+<div class="container" ng-disable-scroll="data.tutorial.active">
+    <h1 class="text-center">API Explorer</h1>
+    <div class="row">
+        <div class="col-sm-12" ui-view></div>
+    </div>
+</div>
