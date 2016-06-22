@@ -15,10 +15,10 @@
         function _queries() {
             return [{
                 title: 'Equals Comparison',
-                description: 'Get properties where the Listing Agent\'s last name (field ListAgentLastName) is \'DOE\' (case sensitive).',
+                description: 'Get properties where the Listing Agent\'s last name (field ListAgentLastName) is \'Smith\' (case sensitive).',
                 query: {
                     select: 'ListingId, ListPrice, ListAgentFirstName',
-                    filter: [{value: 'ListAgentLastName eq \'DOE\'', join: 'and'}],
+                    filter: [{value: 'ListAgentLastName eq \'Smith\'', join: 'and'}],
                     orderby: [],
                     top: '',
                     skip: ''
