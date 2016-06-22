@@ -1,8 +1,8 @@
 (function() {
     'use strict';
     angular
-        .module('app.controller.home', [])
-        .controller('HomeCtrl', Controller);
+        .module('app.controller.explorer', [])
+        .controller('ExplorerCtrl', Controller);
 
     Controller.$inject = ['$scope', '$window', '$timeout', 'MetadataFactory', 'QueryFactory'];
 
@@ -12,7 +12,7 @@
     	init();
 
     	function init () {
-            console.log('Init the home controller');
+            console.log('Init the explorer controller');
     		vm.data = {
                 metadata: {
                     search: '',
@@ -32,10 +32,6 @@
             vm.fillQuery = _fillQuery;
 
             vm.toggleQueryInfo = _toggleQueryInfo;
-
-            $timeout(function () {
-                vm.data.metadata.hidden = false;
-            }, 500);
     	}
 
         /* --- FUNCTIONS --- */
