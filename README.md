@@ -34,6 +34,6 @@ One you have the project installed locally, you need to run some npm and gulp co
 	
 ##Next Steps
 
-Congrats! You have successfully installed the Retsrabbit API Explorer standalone project.
+Congrats! You have successfully installed the Rets Rabbit API Explorer standalone project.
 
-You can learn more about the Api Explorer by visiting this repo: <https://github.com/Anecka/Rets-Rabbit-Angular>
+You can learn more about the API Explorer by visiting this repo: <https://github.com/Anecka/Rets-Rabbit-Angular>

@@ -2,6 +2,7 @@
 <html ng-app="app">
 
 <head>
+    <title>API Explorer: Rets Rabbit, API for MLS powered websites and apps</title>
     <meta charset="utf-8">
     <!--<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">-->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
@@ -12,7 +13,7 @@
 
 <body>
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar  navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -22,15 +23,18 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="https://retsrabbit.com" target="_blank">
-                    <img src="public/img/rets-rabbit-orange.png" width="30">Rets Rabbit</a>
+                    <!--<img src="public/img/rets-rabbit-orange.png" width="30">-->Rets Rabbit</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="https://retsrabbit.com/docs" target="_blank">Docs</a></li>
-                </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="#" class="btn btn-orange hidden-xs">Get Started!</a>
+                    <li class="nav-item"><a href="https://retsrabbit.com">Home</a></li>
+                    <li class="nav-item"><a href="https://retsrabbit.com/developers-creatives">Services</a></li>
+                    <li class="nav-item"><a href="https://retsrabbit.com/pricing">Pricing</a></li>
+                    <li class="nav-item active"><a href="http://explore.retsrabbit.com">API Explorer</a></li>
+                    <li class="nav-item"><a href="http://retsrabbit.com/docs/v2">Docs</a></li>
+                    <li>&nbsp;</li>
+                    <li class="nav-item">
+                        <a href="https://patrickpohler.typeform.com/to/N7ZqgY?plan=none&cta=nav" class="btn btn-orange hidden-xs" target="_blank">FREE TRIAL</a>
                     </li>
                 </ul>
             </div>
@@ -39,6 +43,13 @@
     </nav>
 
     <div ui-view></div>
+
+    <hr>
+    <footer class="footer">
+        <div class="container">
+            <p class="text-center">2016 Anecka LLC, <a href="http://www.retsrabbit.com">Rets Rabbit</a></p>
+        </div>
+    </footer>
     <!-- LIBS -->
     <script type="text/javascript" src="app/app.js"></script>
 </body>
