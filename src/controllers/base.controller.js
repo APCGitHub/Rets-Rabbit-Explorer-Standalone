@@ -34,10 +34,10 @@
             }
 
             if(did_tutorial === 'undefined' || did_tutorial == null || did_tutorial === ''){
-                $document.scrollTopAnimated(0, 200).then(function() {
-                    $scope.data.tutorial.active = true;
-                    $scope.data.tutorial.example_queries = true;
-                });
+                // $document.scrollTopAnimated(0, 200).then(function() {
+                //     $scope.data.tutorial.active = true;
+                //     $scope.data.tutorial.example_queries = true;
+                // });
             }
 
             vm.showFieldsTutorial = _showFieldsTutorial;

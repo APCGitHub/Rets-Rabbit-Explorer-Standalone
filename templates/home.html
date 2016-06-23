@@ -65,16 +65,39 @@
                 <li>
                     <div class="filter-type">$filter:</div>
                     <p>Filtering properties by field values can be accomplished using the $filter option. All of the names in the $filter option are case-sensitive and match the name of the fields provided by the property resource.</p>
-                    <div class="filter-type">options:</div>
+                    <div class="filter-type">comparison:</div>
                     <ul>
-                        <li>eq : equals</li>
-                        <li>lt : less than</li>
-                        <li>le : less than or equals</li>
-                        <li>gt : greater than</li>
-                        <li>ne : not equals</li>
+                        <li>eq : <span class="text-white">equals</span></li>
+                        <li>lt : <span class="text-white">less than</span></li>
+                        <li>le : <span class="text-white">less than or equals</span></li>
+                        <li>gt : <span class="text-white">greater than</span></li>
+                        <li>ne : <span class="text-white">not equals</span></li>
+                    </ul>
+                    <div class="filter-type">logical:</div>
+                    <ul>
                         <li>and</li>
                         <li>or</li>
                         <li>not</li>
+                    </ul>
+                    <div class="filter-type">string functions:</div>
+                    <ul>
+                        <li>contains: <span class="text-white">contains(&lt;field&gt;, 'oh')</span></li>
+                        <li>endswith: <span class="text-white">endswith(&lt;field&gt;, 'ew')</span></li>
+                        <li>startswith: <span class="text-white">startswith(&lt;field&gt;, 'Pa')</span></li>
+                        <li>tolower: <span class="text-white">tolower(&lt;field&gt;) eq 't'</span></li>
+                        <li>toupper: <span class="text-white">toupper(&lt;field&gt;) eq 'y'</span></li>
+                    </ul>
+                    <div class="filter-type">date functions:</div>
+                    <ul>
+                        <li>year: <span class="text-white">year(&lt;field&gt;) eq 6</span></li>
+                        <li>month: <span class="text-white">month(&lt;field&gt;) eq 6</span></li>
+                        <li>day: <span class="text-white">day(&lt;field&gt;) eq 6</span></li>
+                        <li>hour: <span class="text-white">hour(&lt;field&gt;) eq 6</span></li>
+                        <li>minute: <span class="text-white">minute(&lt;field&gt;) eq 6</span></li>
+                        <li>second: <span class="text-white">second(&lt;field&gt;) eq 6</span></li>
+                        <li>date: <span class="text-white">date(&lt;field&gt;) eq date(&lt;field&gt;)</span></li>
+                        <li>time: <span class="text-white">time(&lt;field&gt;) ne &lt;field&gt;</span></li>
+                        <li>now: <span class="text-white">&lt;field&gt; ne now()</span></li>
                     </ul>
                 </li>
                 <li>
@@ -93,8 +116,10 @@
         </div>
     </div>
 </div>
+<!--
 <div class="sidebar tutorial" ng-hide="Explorer.data.tutoral.hidden">
     <div class="handle" ng-click="Explorer.startTutorial()">
         Tutorial
     </div>
 </div>
+-->
