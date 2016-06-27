@@ -6,7 +6,6 @@
 		'ngDisableScroll',
 		'ng-walkthrough',
 		'duScroll',
-		'rets-rabbit-angular',
 	  	'rr.api.v2.explorer',
 		'ui.router',
 	 	'app.templates',
