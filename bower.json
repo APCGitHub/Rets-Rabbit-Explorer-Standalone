@@ -40,9 +40,10 @@
     "angular-bootstrap": "^1.3.3",
     "ng-walkthrough": "^0.4.3",
     "ng-disable-scroll": "^0.1.1",
-    "rr-api-explorer": "dev"
+    "rr-api-explorer": "*"
   },
   "resolutions": {
-    "angular": "1.5.7"
+    "angular": "1.5.7",
+    "rr-api-explorer": "feature/map"
   }
 }
