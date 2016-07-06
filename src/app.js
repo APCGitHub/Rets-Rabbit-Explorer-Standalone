@@ -2,8 +2,8 @@
 	'use strict';
 	angular.module('app', [
 		'ui.bootstrap',
-		'ngDisableScroll',
-		'ng-walkthrough',
+		//'ngDisableScroll',
+		//'ng-walkthrough',
 		'duScroll',
 	  	'rr.api.v2.explorer',
 		'ui.router',
