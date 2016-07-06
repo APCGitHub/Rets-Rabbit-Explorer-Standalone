@@ -30,17 +30,20 @@ var config = {
         src: './src/',
         angular: {
             files: [
+                './bower_components/lodash/dist/lodash.min.js',
                 './bower_components/angular/angular.min.js', 
+                './bower_components/angular-google-maps/dist/angular-google-maps.min.js',
                 './bower_components/angular-ui-router/release/angular-ui-router.min.js',
+                './bower_components/angular-simple-logger/dist/angular-simple-logger.min.js',
                 './bower_components/angular-animate/angular-animate.min.js',
                 './bower_components/rets-rabbit-angular/dist/rets-rabbit-angular.min.js',
                 './bower_components/rr-api-explorer/dist/rr-explorer-2.min.js',
                 './bower_components/angular-scroll/angular-scroll.min.js',
                 './bower_components/angular-bootstrap/ui-bootstrap.min.js',
-                './bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-                './bower_components/ng-walkthrough/ng-walkthrough.js',
-                './bower_components/ng-walkthrough/ng-walkthrough.tap_icons.js',
-                './bower_components/ng-disable-scroll/disable-scroll.min.js'
+                './bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js'
+                //'./bower_components/ng-walkthrough/ng-walkthrough.js',
+                //'./bower_components/ng-walkthrough/ng-walkthrough.tap_icons.js',
+                //'./bower_components/ng-disable-scroll/disable-scroll.min.js',
             ],
             dist: './app/dist/all-angular.min.js'
         }
@@ -117,7 +120,10 @@ gulp.task('clean:dist', function() {
 });
 
 gulp.task('css-copy-vendor', function () {
-    return gulp.src([config.css.bootstrapAngularPath  + '*.css', config.css.walthroughPath + '*.css'])
+    return gulp.src([
+            config.css.bootstrapAngularPath  + '*.css'//, 
+            //config.css.walthroughPath + '*.css'
+        ])
         .pipe(gulp.dest(config.css.destCss));
 });
 
