@@ -25,14 +25,6 @@
             };
             vm.data = {};
 
-            if(token === 'undefined' || token == null || token === ''){
-                AuthFactory.getToken().then(function (res){
-                    console.log(res);
-                }, function (err){
-                    console.log(err);
-                });
-            }
-
             if(did_tutorial === 'undefined' || did_tutorial == null || did_tutorial === ''){
                 // $document.scrollTopAnimated(0, 200).then(function() {
                 //     $scope.data.tutorial.active = true;

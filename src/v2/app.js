@@ -3,6 +3,7 @@
 	angular.module('app', [
 		'ui.bootstrap',
 		'ngDisableScroll',
+		'ngSanitize',
 		'ng-walkthrough',
 		'duScroll',
 	  	'rr.api.v2.explorer',
@@ -13,6 +14,7 @@
 	 	'app.constants',
 	 	'app.controllers',
 	 	'app.factories',
-	  	'app.services'
+	  	'app.services',
+		'app.filters'
 	]);
 })();

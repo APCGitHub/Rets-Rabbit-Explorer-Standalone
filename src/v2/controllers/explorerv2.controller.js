@@ -1,18 +1,17 @@
 (function() {
     'use strict';
     angular
-        .module('app.controller.explorer', [])
-        .controller('ExplorerCtrl', Controller);
+        .module('app.controller.explore.v2', [])
+        .controller('ExploreV2Ctrl', Controller);
 
-    Controller.$inject = ['$scope', '$window', '$document', '$timeout', 'MetadataFactory', 'QueryFactory'];
+    Controller.$inject = ['$scope', '$window', '$document', '$timeout', 'MetadataFactory', 'QueryFactory', 'AuthFactory'];
 
-    function Controller($scope, $window, $document, $timeout, MetadataFactory, QueryFactory) {
+    function Controller($scope, $window, $document, $timeout, MetadataFactory, QueryFactory, AuthFactory) {
     	var vm = this;
 
     	init();
 
     	function init () {
-            console.log('Init the explorer controller');
     		vm.data = {
                 tutoral: {
                     hidden: true
@@ -29,6 +28,16 @@
                 queries: QueryFactory.queries(),
                 fillQuery: null
             };
+
+            var token = window.localStorage.getItem('token');
+
+            if(token === 'undefined' || token == null || token === ''){
+                AuthFactory.getToken().then(function (res){
+                    console.log(res);
+                }, function (err){
+                    console.log(err);
+                });
+            }
 
 
             vm.toggleMeta = _toggleMeta;
