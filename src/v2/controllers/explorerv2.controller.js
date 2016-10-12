@@ -4,7 +4,7 @@
         .module('app.controller.explore.v2', [])
         .controller('ExploreV2Ctrl', Controller);
 
-    Controller.$inject = ['$scope', '$window', '$document', '$timeout', 'MetadataFactory', 'QueryFactory', 'AuthFactory'];
+    Controller.$inject = ['$scope', '$window', '$document', '$timeout', 'MetadataFactory', 'QueryFactory', 'RRAuthFactory'];
 
     function Controller($scope, $window, $document, $timeout, MetadataFactory, QueryFactory, AuthFactory) {
     	var vm = this;
