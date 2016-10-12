@@ -2,38 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="310b64ae-24c4-4457-90ab-fc6915fb1751" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/webResources.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/templates/landing.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/templates/v1.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rollup.config.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/v2/controllers/explorerv1.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/v2/controllers/home.controller.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/v2/controllers/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/v2/filters/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/v2/filters/show_modifier.filter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webpack.config.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app.config.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app.constants.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app.run.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/app.templates.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/controllers/base.controller.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/controllers/explorer.controller.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/controllers/module.controllers.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/factories/module.factories.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/services/module.services.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates/base.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates/home.html" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/gulpfile.js" afterPath="$PROJECT_DIR$/gulpfile.old.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/scss/imports/_helpers.scss" afterPath="$PROJECT_DIR$/src/sass/partials/_utilities.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/scss/imports/_variables.scss" afterPath="$PROJECT_DIR$/src/sass/partials/_colors.scss" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/scss/styles/styles.scss" afterPath="$PROJECT_DIR$/src/sass/styles.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower.json" afterPath="$PROJECT_DIR$/bower.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/index.html" afterPath="$PROJECT_DIR$/public/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/dist/all-angular.min.js" afterPath="$PROJECT_DIR$/public/js/dist/all-angular.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/explore.js" afterPath="$PROJECT_DIR$/public/js/explore.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/explore.min.js" afterPath="$PROJECT_DIR$/public/js/explore.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sass/styles.scss" afterPath="$PROJECT_DIR$/src/sass/styles.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/v2/app.js" afterPath="$PROJECT_DIR$/src/v2/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/v2/controllers/explorerv2.controller.js" afterPath="$PROJECT_DIR$/src/v2/controllers/explorerv2.controller.js" />
     </list>
     <ignored path="Rets-Rabbit-Explorer-Standalone.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -57,7 +33,7 @@
       <file leaf-file-name="explorerv1.controller.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/v2/controllers/explorerv1.controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
+            <state relative-caret-position="639">
               <caret line="298" column="53" selection-start-line="298" selection-start-column="53" selection-end-line="298" selection-end-column="53" />
               <folding>
                 <element signature="e#0#43#0" expanded="false" />
@@ -67,11 +43,33 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="327">
+              <caret line="52" column="14" selection-start-line="52" selection-start-column="14" selection-end-line="52" selection-end-column="14" />
+              <folding>
+                <element signature="e#2174#2180#1" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base.controller.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/v2/controllers/base.controller.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="650">
+              <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="styles.scss" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sass/styles.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="558">
-              <caret line="60" column="18" selection-start-line="60" selection-start-column="18" selection-end-line="60" selection-end-column="18" />
+            <state relative-caret-position="220">
+              <caret line="69" column="21" selection-start-line="69" selection-start-column="21" selection-end-line="69" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -126,19 +124,19 @@
         <option value="$PROJECT_DIR$/public/templates/base.html" />
         <option value="$PROJECT_DIR$/src/v2/controllers/explorer.controller.js" />
         <option value="$PROJECT_DIR$/src/v2/controllers/index.js" />
-        <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/public/templates/v2.html" />
         <option value="$PROJECT_DIR$/src/v2/app.config.js" />
         <option value="$PROJECT_DIR$/src/v2/filters/index.js" />
-        <option value="$PROJECT_DIR$/src/v2/controllers/explorerv2.controller.js" />
         <option value="$PROJECT_DIR$/src/v2/controllers/base.controller.js" />
         <option value="$PROJECT_DIR$/src/v2/filters/show_modifier.filter.js" />
         <option value="$PROJECT_DIR$/src/sass/partials/_utilities.scss" />
-        <option value="$PROJECT_DIR$/bower.json" />
         <option value="$PROJECT_DIR$/gulpfile.js" />
-        <option value="$PROJECT_DIR$/src/v2/app.js" />
         <option value="$PROJECT_DIR$/public/templates/v1.html" />
         <option value="$PROJECT_DIR$/src/v2/controllers/explorerv1.controller.js" />
+        <option value="$PROJECT_DIR$/bower.json" />
+        <option value="$PROJECT_DIR$/public/index.html" />
+        <option value="$PROJECT_DIR$/src/v2/app.js" />
+        <option value="$PROJECT_DIR$/src/v2/controllers/explorerv2.controller.js" />
         <option value="$PROJECT_DIR$/src/sass/styles.scss" />
       </list>
     </option>
@@ -468,7 +466,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="bower_components" />
+              <option name="myItemId" value="public" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -482,11 +480,11 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="bower_components" />
+              <option name="myItemId" value="public" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="angular-sanitize" />
+              <option name="myItemId" value="templates" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -577,12 +575,12 @@
       <updated>1476128813181</updated>
       <workItem from="1476128816441" duration="904000" />
       <workItem from="1476129993519" duration="15091000" />
-      <workItem from="1476284203215" duration="10365000" />
+      <workItem from="1476284203215" duration="10802000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26360000" />
+    <option name="totallyTimeSpent" value="26797000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="12" y="23" width="1256" height="759" extended-state="0" />
@@ -858,32 +856,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1534">
-          <caret line="59" column="51" selection-start-line="59" selection-start-column="51" selection-end-line="59" selection-end-column="51" />
-          <folding>
-            <element signature="e#2174#2180#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/v2/controllers/base.controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/v2/controllers/explorerv2.controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-442">
-          <caret line="6" column="119" selection-start-line="6" selection-start-column="119" selection-end-line="6" selection-end-column="119" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/log_cleaner.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -926,14 +898,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bower.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="45" column="4" selection-start-line="45" selection-start-column="4" selection-end-line="45" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gulpfile.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -971,14 +935,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/v2/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/templates/v1.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="532">
@@ -987,9 +943,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/bower.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="49" column="3" selection-start-line="49" selection-start-column="3" selection-end-line="49" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/v2/controllers/explorerv1.controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
+        <state relative-caret-position="639">
           <caret line="298" column="53" selection-start-line="298" selection-start-column="53" selection-end-line="298" selection-end-column="53" />
           <folding>
             <element signature="e#0#43#0" expanded="false" />
@@ -998,10 +962,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/v2/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="327">
+          <caret line="52" column="14" selection-start-line="52" selection-start-column="14" selection-end-line="52" selection-end-column="14" />
+          <folding>
+            <element signature="e#2174#2180#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/v2/controllers/base.controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="650">
+          <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/v2/controllers/explorerv2.controller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="6" column="110" selection-start-line="6" selection-start-column="110" selection-end-line="6" selection-end-column="110" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/sass/styles.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="60" column="18" selection-start-line="60" selection-start-column="18" selection-end-line="60" selection-end-column="18" />
+        <state relative-caret-position="220">
+          <caret line="69" column="21" selection-start-line="69" selection-start-column="21" selection-end-line="69" selection-end-column="21" />
           <folding />
         </state>
       </provider>
