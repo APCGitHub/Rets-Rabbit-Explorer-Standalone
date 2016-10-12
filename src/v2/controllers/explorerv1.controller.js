@@ -28,6 +28,8 @@
                 storageKey: 'access_token_v1'
             });
 
+            renderjson.set_show_to_level(3);
+
             vm.data = {
                 api: {
                     url: 'http://retsrabbit.app/api/'
