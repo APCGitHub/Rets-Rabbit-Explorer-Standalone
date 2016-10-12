@@ -4,7 +4,6 @@
 		'ui.bootstrap',
 		'ngDisableScroll',
 		'ngSanitize',
-		'ng-walkthrough',
 		'duScroll',
 	  	'rr.api.v2.explorer',
 		'ui.router',
