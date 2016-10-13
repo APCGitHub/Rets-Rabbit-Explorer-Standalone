@@ -19,7 +19,7 @@
                         {{query.description}}
                         <br>
                         <br>
-                        <a href="#explorer-box" class="btn btn-success" offset="80" du-smooth-scroll ng-click="ExplorerV1.fillQuery(query)">Try it out</a>
+                        <a ng-class="{'disabled': !ExplorerV1.ready()}" href="#explorer-box" class="btn btn-success" offset="80" du-smooth-scroll ng-click="ExplorerV1.fillQuery(query.query)">Try it out</a>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class="row margin-t-lg">
+    <div class="row margin-t-lg" id="explorer-box">
         <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
             <h3>Build Query</h3>
             <form role="form" class="form-horizontal" ng-submit="ExplorerV1.search()">
@@ -51,9 +51,11 @@
                         Modifier:
                     </label>
                     <div class="col-sm-3 col-xs-9 margin-t-sm">
-                        <select name="modifier" ng-model="ExplorerV1.data.query.params[$index].modifier" class="form-control">
+                        <select name="modifier"
+                                ng-model="ExplorerV1.data.query.params[$index].modifier"
+                                class="form-control"
+                                ng-options="mod.value as mod.name for mod in ExplorerV1.data.query.modifiers | showModifier:ExplorerV1.data.query.params[$index].field:ExplorerV1.data.metadata.fields">
                             <option value="">Modifier</option>
-                            <option ng-value="mod.value" ng-repeat="mod in ExplorerV1.data.query.modifiers | showModifier:ExplorerV1.data.query.params[$index].field:ExplorerV1.data.metadata.fields">{{mod.name}}</option>
                         </select>
                     </div>
                     <label for="value" class="col-xs-3 control-label text-center margin-t-sm visible-xs">
@@ -81,7 +83,9 @@
                 </div>
                 <div class="form-group margin-t-lg">
                     <div class="col-sm-12">
-                        <button ng-click="ExplorerV1.addField()" class="btn btn-success" type="button">Add Field</button>
+                        <button ng-click="ExplorerV1.addField()" class="btn btn-success" type="button">
+                            <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Field
+                        </button>
                         <button type="submit" ng-disabled="!ExplorerV1.ready() || ExplorerV1.data.query.fetching" class="btn btn-primary pull-right">
                             <i class="fa fa-search" aria-hidden="true"></i>&nbsp;Search
                         </button>
