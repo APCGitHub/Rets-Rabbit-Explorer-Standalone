@@ -1,12 +1,13 @@
 (function () {
 	'use strict';
 	angular.module('app', [
+		'ui.router',
 		'ui.bootstrap',
 		'ngDisableScroll',
 		'ngSanitize',
+		'ngToast',
 		'duScroll',
 	  	'rr.api.v2.explorer',
-		'ui.router',
 	 	'app.templates',
 	 	'app.config',
 	 	'app.run',
