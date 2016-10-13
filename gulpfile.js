@@ -28,18 +28,18 @@ const config = {
 		angular: {
 			files: [
 				'./bower_components/angular/angular.min.js',
-				'./bower_components/angular-ui-router/release/angular-ui-router.min.js',
-				'./bower_components/angular-animate/angular-animate.min.js',
 				'./bower_components/rets-rabbit-angular/dist/rets-rabbit-angular.min.js',
 				'./bower_components/rr-api-explorer/dist/rr-explorer-2.min.js',
-				'./bower_components/loaders.css/loaders.css.js',
-				'./bower_components/renderjson/renderjson.js',
+				'./bower_components/angular-ui-router/release/angular-ui-router.min.js',
+				'./bower_components/ngToast/dist/ngToast.min.js',
+				'./bower_components/angular-animate/angular-animate.min.js',
 				'./bower_components/angular-scroll/angular-scroll.min.js',
 				'./bower_components/angular-sanitize/angular-sanitize.min.js',
 				'./bower_components/angular-bootstrap/ui-bootstrap.min.js',
 				'./bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-				'./bower_components/ng-walkthrough/ng-walkthrough.js',
-				'./bower_components/ng-walkthrough/ng-walkthrough.tap_icons.js',
+				'./bower_components/loaders.css/loaders.css.js',
+				'./bower_components/renderjson/renderjson.js',
+				'./bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
 				'./bower_components/ng-disable-scroll/disable-scroll.min.js'
 			],
 			dist: './public/js/dist/all-angular.min.js'
@@ -74,8 +74,12 @@ elixir(function (mix){
         './public/css/build/styles.css')
 		.styles([
 			'./public/css/build/styles.css',
+			'./bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css',
+			'./bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
 			'./bower_components/angular-bootstrap/ui-bootstrap-csp.css',
 			'./bower_components/loaders.css/loaders.min.css',
+			'./bower_components/ngToast/dist/ngToast.css',
+			'./bower_components/ngToast/dist/ngToast-animations.min.css',
 		], './public/css/app.css');
 
 	// mix.webpack('./src/v1/app.js', './public/js/build/v1.js');
