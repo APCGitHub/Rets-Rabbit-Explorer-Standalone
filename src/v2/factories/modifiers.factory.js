@@ -12,8 +12,7 @@
 
     function Factory() {
         var factory = {
-            all: _all,
-            map: _map
+            all: _all
         };
 
         return factory;
@@ -77,14 +76,6 @@
             ];
 
             return m;
-        }
-
-        function _map() {
-            return {
-                'string': ['character varying', 'text'],
-                'number': ['numeric', 'integer'],
-                'date': ['date']
-            }
         }
     }
 })();
