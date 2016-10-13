@@ -81,6 +81,19 @@
                         modifier: '='
                     }
                 ]
+            }, {
+                title: 'Combination of Fields',
+                description: 'This is a more complex query which searches multiple fields (City, StreetName) for a single value, \'dub\'',
+                query: [
+                    {
+                        field: 'City, StreetName',
+                        value: {
+                            left: 'dub',
+                            right: ''
+                        },
+                        modifier: ':startswith'
+                    }
+                ]
             }];
 
             return q;
