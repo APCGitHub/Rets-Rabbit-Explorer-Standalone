@@ -96,19 +96,18 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-sm-10 col-sm-offset-1">
-            <h3 class="text-center">Results <span ng-show="ExplorerV1.data.query.results">:&nbsp;{{ExplorerV1.data.query.total_records}}</span></h3>
+        <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
+            <h3 class="text-center">Results <span ng-show="ExplorerV1.data.query.results">:&nbsp;{{ExplorerV1.data.query.total_records}}</span><span class="pull-right" ng-show="ExplorerV1.data.query.time_elapsed">{{ExplorerV1.data.query.time_elapsed}}ms</span></h3>
             <code class="full-width text-center" ng-show="!ExplorerV1.data.query.results">
                 <div ng-show="!ExplorerV1.data.query.fetching">Click "Search" to hit the Retsrabbit V2 API!</div>
                 <div class="loader" ng-show="ExplorerV1.data.query.fetching">
                     <div class="loader-inner ball-pulse-rise"></div>
                 </div>
             </code>
+
+            <!-- JSON RESPONSE -->
             <div id="query-results">
             </div>
-            <!--
-            <code class="full-width code-md" ng-show="ExplorerV1.data.query.results" class="text-center">{{ ExplorerV1.data.query.results }}</code>
-            -->
         </div>
     </div>
 </div>
