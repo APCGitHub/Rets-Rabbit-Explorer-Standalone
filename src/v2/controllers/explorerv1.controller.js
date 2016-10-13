@@ -8,18 +8,20 @@
         .module('app.controller.explore.v1', [])
         .controller('ExploreV1Ctrl', Controller);
 
-    Controller.$inject = ['$scope', '$timeout', '$document'];
+    Controller.$inject = ['$scope', '$timeout', '$document', 'V1QueryFactory', 'ngToast', 'V1ModifiersFactory'];
 
-    function Controller($scope, $timeout, $document) {
+    function Controller($scope, $timeout, $document, V1QueryFactory, ngToast, V1ModifiersFactory) {
         var vm = this;
 
         init();
 
         $(document).ready(function () {
+            //boot up the spinner
             $('.loader-inner').loaders();
         });
 
         function init () {
+            //init a RR client
             vm.RR = new RetsRabbit({
                 host: 'http',
                 client_id: 'E1bi6hyy7nLxjlicqE2cDhyUykmA11KPoK9cSbr',
@@ -28,9 +30,11 @@
                 storageKey: 'access_token_v1'
             });
 
+            //set render level to 3
             renderjson.set_show_to_level(3);
 
             vm.data = {
+                queriesCollapsed: false,
                 api: {
                     url: 'http://retsrabbit.app/api/'
                 },
@@ -54,79 +58,46 @@
                     string: '',
                     fetching: false,
                     params: [],
-                    modifiers: [
-                        {
-                            name: 'Starts With',
-                            value: ':startswith',
-                            for: 'string'
-                        }, {
-                            name: 'Ends With',
-                            value: ':endswith',
-                            for: 'string'
-                        }, {
-                            name: 'Contains',
-                            value: ':indexof',
-                            for: 'string'
-                        }, {
-                            name: 'No Case',
-                            value: ':nocase',
-                            for: 'string'
-
-                        }, {
-                            name: 'Greater',
-                            value: '+',
-                            for: 'number'
-                        }, {
-                            name: 'Less',
-                            value: '-',
-                            for: 'number'
-                        }, {
-                            name: 'Between',
-                            value: '<->',
-                            for: 'number'
-                        }, {
-                            name: 'Equals',
-                            value: '=',
-                            for: 'number'
-                        }
-                    ],
+                    modifiers: V1ModifiersFactory.all(),
                     results: null,
                     total_records: null
                 },
+                queries: V1QueryFactory.all(),
                 queryUrl: ''
             };
 
             $scope.params = vm.data.query.params;
 
+            //have to do this for some reason to get them to show initially
             $timeout(function () {
                 vm.data.metadata.search = '';
             }, 100);
 
+            //this is how we can emulate vue computed props...super ugly -.-
             $scope.$watch('params', function (oldv, newv){
                 if(oldv != newv){
-                    var s = _queryString();
+                    var s = _queryString(true);
                     _queryUrl(s);
                 }
             }, true);
 
+            //check the auth
             _checkAuth();
+
+            //do initial query build for the UI
             _queryUrl();
         }
 
         /* === METHOD BINDING === */
-        vm.query = _query;
         vm.toggleQueryInfo = _toggleQueryInfo;
         vm.search = _search;
         vm.ready = _ready;
         vm.addField = _addField;
         vm.toggleM = _toggleM;
         vm.removeParam = _removeParam;
+        vm.fillQuery = _fillQuery;
 
         /* === METHODS === */
-        function _query() {
-
-        }
-
         function _checkAuth() {
             var token = window.localStorage.getItem('access_token_v1');
 
@@ -138,8 +109,18 @@
             }
         }
 
+        /**
+         * This method handles authenticating the v1 explorer
+         * @private
+         */
         function _authenticate () {
             vm.data.auth.authenticating = true;
+
+            var toast = ngToast.info({
+                content: 'Fetching <b>access token</b>',
+                dismissButton: true,
+                // dismissOnTimeout: false
+            });
 
             //Stores auth tokens for us
             vm.RR.auth(function(err, res) {
@@ -154,9 +135,19 @@
             });
         }
 
+        /**
+         * This method fetches the server meta data
+         * @private
+         */
         function _metaData() {
             if(!vm.data.server.hash)
                 return;
+
+            var toast = ngToast.info({
+                content: 'Fetching Server Metadata: <b>' + vm.data.server.hash + '</b>',
+                dismissButton: true,
+                // dismissOnTimeout: false
+            });
 
             vm.RR.get('/v1/' + vm.data.server.hash + '/metadata/explorer', null, null, function(err, res) {
                 if(err){
@@ -168,22 +159,36 @@
             });
         }
 
+        /**
+         * This method fetches all the servers for the client
+         * @private
+         */
         function _servers() {
-            console.log('getting servers');
             vm.data.server.fetching = true;
+
+            var toast = ngToast.info({
+                content: 'Fetching Servers',
+                dismissButton: true,
+                // dismissOnTimeout: false
+            });
 
             vm.RR.get('/v1/server', null, null, function (err, res) {
                 vm.data.server.fetching = false;
+
                 if(err){
                     console.log(err);
                 } else {
                     if(res.length) {
                         for(var i = 0; i < res.length; i ++){
                             if(res[i].name === 'Rets Rabbit Test V1'){
+
                                 vm.data.server.hash = res[i].server_hash;
+
+                                //outside of angular digest so kick off manually
                                 $timeout(function () {
                                     _queryUrl();
                                 }, 100);
+
                                 break;
                             }
                         }
@@ -206,16 +211,18 @@
             }
         }
 
-        function _queryString() {
+        function _queryString(encode_params) {
             var url = '';
 
             if(!vm.data.metadata.fields || !vm.data.metadata.fields.length)
                 return url;
 
+            //loop through each user added query param
             for(var i = 0, len = vm.data.query.params.length; i < len; i++){
                 var p = vm.data.query.params[i];
 
                 var metadata = null;
+                //see if the param is in the metadata or not
                 for(var j = 0, len2 = vm.data.metadata.fields.length; j < len2; j++){
                     if(vm.data.metadata.fields[j].Name == p.field){
                         metadata = vm.data.metadata.fields[j];
@@ -226,13 +233,21 @@
                 if(!metadata) //go to next field since it's not in metadata
                     continue;
 
-                if(p.value.left || p.value.right){
-                    url += p.field;
+                if(p.value.left || p.value.right){ //if they entered a value
                     var modifier = null;
 
+                    //append the field name
+                    url += p.field;
+
                     //find the modifier
+                    var m;
                     for(var z = 0; z < vm.data.query.modifiers.length; z++){
-                        if(vm.data.query.modifiers[z].value == p.modifier){
+                        m = vm.data.query.modifiers[z];
+
+                        //need to match 2 things
+                        //1: cur mod value (+, - etc) with the selected mod
+                        //2: cur mod for with found meta type
+                        if(m.value === p.modifier && V1ModifiersFactory.map()[m.for].indexOf(metadata.Type) > -1){
                             modifier = vm.data.query.modifiers[z];
                             break;
                         }
@@ -240,23 +255,46 @@
 
                     //see what kind of modifier we have
                     if(modifier){
-                        if(modifier.for == 'string'){
-                            url += p.modifier;
-                            url += '=' + p.value.left;
+                        var left = p.value.left,
+                            right = p.value.right;
+
+                        if(modifier.for === 'string'){
+                            left = _parseValue(left);
+
+                            if(p.modifier === '='){
+                                url += p.modifier + left;
+                            } else {
+                                url += p.modifier;
+                                url += '=' + left;
+                            }
                         }
 
-                        if(modifier.for == 'number'){
-                            if(modifier.value == '<->'){
-                                url += '=' + p.value.left;
+                        if(modifier.for === 'number' || modifier.for === 'date'){
+                            if(p.value.left)
+                                left = encodeURIComponent(left);
+
+                            if(p.value.right)
+                                right = encodeURIComponent(right);
+
+                            //dates have to be suffixed by this modifier
+                            if(modifier.for === 'date')
+                                url += ':date';
+
+                            console.log(modifier.for);
+                            console.log(url);
+
+                            if(modifier.value == '<->'){ //between
+                                url += '=' + left;
                                 url += '-';
-                                url += p.value.right;
+                                url += right;
                             } else {
-                                url += '=' + p.value.left;
-                                if(p.modifier === '+'){
+                                url += '=' + left;
+
+                                if(p.modifier === '+'){ //greater
                                     url += "%2b";
-                                } else if (p.modifier === '=') {
+                                } else if (p.modifier === '=') { //equals
                                     //do nothing
-                                } else {
+                                } else { //less than
                                     url += p.modifier;
                                 }
                             }
@@ -293,7 +331,7 @@
         }
 
         function _search() {
-            var s = _queryString();
+            var s = _queryString(true);
             var url = '/v1/' + vm.data.server.hash + '/listing/search?' + s;
 
             vm.data.query.results = null;
@@ -306,6 +344,8 @@
                 if(err){
                     console.log(err);
                 } else {
+                    //had to do this in a timeout...maybe because it is out of
+                    //angular's digest loop?
                     $timeout(function () {
                         vm.data.query.results = res;//JSON.stringify(res, null, 4);
                         vm.data.query.total_records = res.total_records;
@@ -329,11 +369,57 @@
                 modifier: null
             };
 
+            //$('.datepicker').datepicker();
+
             vm.data.query.params.push(param);
         }
 
+        /**
+         * Removes a search line item from the query builder
+         *
+         * @param index     int     The position of the line item we are removing
+         * @private
+         */
         function _removeParam(index) {
             vm.data.query.params.splice(index, 1);
+            $scope.params = vm.data.query.params;
+
+            var s = _queryString(false);
+            _queryUrl(s);
+        }
+
+        /**
+         * Fill in a query from the examples
+         * @param q     Object     The query object
+         * @private
+         */
+        function _fillQuery(q){
+            vm.data.query.params = [];
+
+            for(var i = 0; i < q.length; i++){
+                vm.data.query.params.push(q[i]);
+            }
+
+            $scope.params = vm.data.query.params;
+
+            if(vm.data.query.params.length){
+                var s = _queryString(true);
+                _queryUrl(s);
+            }
+        }
+
+        function _parseValue(value_string){
+            if(!value_string || !value_string.length){
+                return '';
+            }
+
+            var parts = value_string.split(',');
+
+            parts = parts.map(function (term){
+                return term.trim();
+            });
+
+            return parts.join('|');
         }
     }
 })();
