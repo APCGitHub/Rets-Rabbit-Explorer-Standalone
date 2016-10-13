@@ -29,6 +29,7 @@
                         var _field = metadata[j];
                         var _name = _field.Type;
 
+                        //number types
                         if (_mod.for === 'number') {
                             if (_name.toLowerCase() === 'integer')
                                 passed = true;
@@ -38,11 +39,15 @@
 
                             if (_name.toLowerCase() === 'decimal')
                                 passed = true;
+                        }
 
+                        //date types
+                        if(_mod.for === 'date'){
                             if (_name.toLowerCase() === 'date')
                                 passed = true;
                         }
 
+                        //string types
                         if (_mod.for === 'string') {
                             if (_name.toLowerCase().includes('character') ||
                                 _name.toLowerCase().includes('text'))
