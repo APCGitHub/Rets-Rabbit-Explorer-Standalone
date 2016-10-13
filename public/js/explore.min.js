@@ -845,9 +845,9 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
         .module('app.controller.explore.v1', [])
         .controller('ExploreV1Ctrl', Controller);
 
-    Controller.$inject = ['$scope', '$timeout', '$document', 'V1QueryFactory', 'ngToast', 'V1ModifiersFactory'];
+    Controller.$inject = ['$scope', '$timeout', '$document', 'V1QueryFactory', 'ngToast', 'V1ModifiersFactory', 'FieldService', 'MetadataService'];
 
-    function Controller($scope, $timeout, $document, V1QueryFactory, ngToast, V1ModifiersFactory) {
+    function Controller($scope, $timeout, $document, V1QueryFactory, ngToast, V1ModifiersFactory, FieldService, MetadataService) {
         var vm = this;
 
         init();
@@ -892,6 +892,7 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
                     authenticating: false
                 },
                 query: {
+                    time_elapsed: null,
                     string: '',
                     fetching: false,
                     params: [],
@@ -1048,7 +1049,7 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
             }
         }
 
-        function _queryString(encode_params) {
+        function _queryString() {
             var url = '';
 
             if(!vm.data.metadata.fields || !vm.data.metadata.fields.length)
@@ -1057,45 +1058,77 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
             //loop through each user added query param
             for(var i = 0, len = vm.data.query.params.length; i < len; i++){
                 var p = vm.data.query.params[i];
+                var metadatas = [];
+                var matched_all_field_names = true;
+                var fields = FieldService.parse(p.field);
 
-                var metadata = null;
-                //see if the param is in the metadata or not
-                for(var j = 0, len2 = vm.data.metadata.fields.length; j < len2; j++){
-                    if(vm.data.metadata.fields[j].Name == p.field){
-                        metadata = vm.data.metadata.fields[j];
+                //iterate through the possible comma separate field list
+                for(var ii = 0; ii < fields.parts.length; ii++){
+                    var field_name = fields.parts[ii];
+                    var _found = false;
+
+                    //see if the param is in the metadata or not
+                    for(var j = 0, len2 = vm.data.metadata.fields.length; j < len2; j++){
+                        if(vm.data.metadata.fields[j].Name == field_name){
+                            metadatas.push(vm.data.metadata.fields[j]);
+                            _found = true;
+                            break;
+                        }
+                    }
+
+                    //the field wasn't in the meta so we stop
+                    if(!_found){
+                        matched_all_field_names = false;
                         break;
                     }
                 }
 
-                if(!metadata) //go to next field since it's not in metadata
+                if(!matched_all_field_names) //didn't match all field names so move on
                     continue;
 
+                //check to make sure all fields have the same meta
+                if(metadatas.length > 1){
+                    var all_match = true;
+                    for(var ii = 1; ii < metadatas.length; ii++){
+                        if(metadatas[0].Type !== metadatas[ii].Type){
+                            all_match = false;
+                            break;
+                        }
+                    }
+
+                    if(!all_match)
+                        continue;
+                }
+
                 if(p.value.left || p.value.right){ //if they entered a value
-                    var modifier = null;
+                    var modifier = null, metadata = metadatas[0];
 
                     //append the field name
-                    url += p.field;
+                    url += fields.value;
 
                     //find the modifier
                     var m;
+                    var modMap = MetadataService.map;
+
                     for(var z = 0; z < vm.data.query.modifiers.length; z++){
                         m = vm.data.query.modifiers[z];
 
                         //need to match 2 things
                         //1: cur mod value (+, - etc) with the selected mod
                         //2: cur mod for with found meta type
-                        if(m.value === p.modifier && V1ModifiersFactory.map()[m.for].indexOf(metadata.Type) > -1){
+                        if(m.value === p.modifier && modMap[m.for].indexOf(metadata.Type) > -1){
                             modifier = vm.data.query.modifiers[z];
                             break;
                         }
                     }
 
-                    //see what kind of modifier we have
+                    //see what kind of modifier we have: string, number, date
                     if(modifier){
                         var left = p.value.left,
                             right = p.value.right;
 
                         if(modifier.for === 'string'){
+                            //sometimes strings do multi value searches
                             left = _parseValue(left);
 
                             if(p.modifier === '='){
@@ -1117,9 +1150,6 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
                             if(modifier.for === 'date')
                                 url += ':date';
 
-                            console.log(modifier.for);
-                            console.log(url);
-
                             if(modifier.value == '<->'){ //between
                                 url += '=' + left;
                                 url += '-';
@@ -1139,10 +1169,12 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
                     }
                 }
 
+                //if not last, add ampersand
                 if((i+1) < len)
                     url += '&';
             }
 
+            //remove last if ampersand
             if(url.substr(url.length - 1) == '&')
                 url = url.slice(0, -1);
 
@@ -1172,10 +1204,14 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
             var url = '/v1/' + vm.data.server.hash + '/listing/search?' + s;
 
             vm.data.query.results = null;
+            vm.data.query.time_elapsed = null;
             vm.data.query.fetching = true;
             $document.find('#query-results').empty();
 
+            var start = performance.now();
             vm.RR.get(url, null, null, function(err, res) {
+                var end = performance.now();
+
                 vm.data.query.fetching = false;
 
                 if(err){
@@ -1184,6 +1220,7 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
                     //had to do this in a timeout...maybe because it is out of
                     //angular's digest loop?
                     $timeout(function () {
+                        vm.data.query.time_elapsed = (end-start).toFixed(0);
                         vm.data.query.results = res;//JSON.stringify(res, null, 4);
                         vm.data.query.total_records = res.total_records;
                         $document.find('#query-results').append(renderjson(res));
@@ -1196,6 +1233,10 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
             return vm.data.server.hash != null && vm.data.auth.token != null;
         }
 
+        /**
+         * Add an empty field query builder line item
+         * @private
+         */
         function _addField() {
             var param = {
                 field: null,
@@ -1245,6 +1286,13 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
             }
         }
 
+        /**
+         * This method parses a value which may be a comma separated list
+         *
+         * @param value_string
+         * @returns string
+         * @private
+         */
         function _parseValue(value_string){
             if(!value_string || !value_string.length){
                 return '';
@@ -1252,6 +1300,7 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
 
             var parts = value_string.split(',');
 
+            //trim any whitespace
             parts = parts.map(function (term){
                 return term.trim();
             });
@@ -1416,8 +1465,7 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
 
     function Factory() {
         var factory = {
-            all: _all,
-            map: _map
+            all: _all
         };
 
         return factory;
@@ -1481,14 +1529,6 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
             ];
 
             return m;
-        }
-
-        function _map() {
-            return {
-                'string': ['character varying', 'text'],
-                'number': ['numeric', 'integer'],
-                'date': ['date']
-            }
         }
     }
 })();
@@ -1576,6 +1616,19 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
                         modifier: '='
                     }
                 ]
+            }, {
+                title: 'Combination of Fields',
+                description: 'This is a more complex query which searches multiple fields (City, StreetName) for a single value, \'dub\'',
+                query: [
+                    {
+                        field: 'City, StreetName',
+                        value: {
+                            left: 'dub',
+                            right: ''
+                        },
+                        modifier: ':startswith'
+                    }
+                ]
             }];
 
             return q;
@@ -1605,54 +1658,77 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
         .module('app.filter.show_modifier', [])
         .filter('showModifier', Filter);
 
-    function Filter() {
+    Filter.$inject = ['FieldService', 'MetadataService'];
+
+    function Filter(FieldService, MetadataService) {
         return function (mods, field, metadata) {
-            if(!field || field === '')
+            if(!field || field === '' || !metadata || !metadata.length)
                 return mods;
 
+            //build list of allowed modifiers
             var new_mods = [];
+
+            //field may be comma separated list
+            var field_data = FieldService.parse(field);
+
+            //store each field's meta in an array
+            var metas = [];
+
+            //check through each field to find it's meta
+            for(var j = 0; j < field_data.parts.length; j++) {
+                for(var jj = 0, len2 = metadata.length; jj < len2; jj++){
+                    if(metadata[jj].Name === field_data.parts[j]){
+                        metas.push(metadata[jj]);
+                        break;
+                    }
+                }
+            }
+
+            //at least one didn't match so we just return current_mods
+            if(metas.length != field_data.parts.length){
+                return new_mods;
+            }
+
+            //all field metas should have the same type
+            if(metas.length > 1){
+                var first_type = MetadataService.findKey(metas[0].Type);
+
+                for(var i = 1; i < metas.length; i++){
+                    if(first_type !== MetadataService.findKey(metas[i].Type))
+                        return new_mods;
+                }
+            }
 
             for(var i = 0; i < mods.length; i ++) {
                 var _mod = mods[i];
                 var passed = false;
 
-                if (!metadata || !metadata.length) {
-                    new_mods.push(_mod);
-                    continue;
+                var _field = metas[0];
+                var _name = _field.Type;
+
+                //number types
+                if (_mod.for === 'number') {
+                    if (_name.toLowerCase() === 'integer')
+                        passed = true;
+
+                    if (_name.toLowerCase() === 'numeric')
+                        passed = true;
+
+                    if (_name.toLowerCase() === 'decimal')
+                        passed = true;
                 }
 
-                for (var j = 0, len2 = metadata.length; j < len2; j++) {
-                    if (metadata[j].Name == field) {
-                        var _field = metadata[j];
-                        var _name = _field.Type;
+                //date types
+                if(_mod.for === 'date'){
+                    if (_name.toLowerCase() === 'date')
+                        passed = true;
+                }
 
-                        //number types
-                        if (_mod.for === 'number') {
-                            if (_name.toLowerCase() === 'integer')
-                                passed = true;
-
-                            if (_name.toLowerCase() === 'numeric')
-                                passed = true;
-
-                            if (_name.toLowerCase() === 'decimal')
-                                passed = true;
-                        }
-
-                        //date types
-                        if(_mod.for === 'date'){
-                            if (_name.toLowerCase() === 'date')
-                                passed = true;
-                        }
-
-                        //string types
-                        if (_mod.for === 'string') {
-                            if (_name.toLowerCase().includes('character') ||
-                                _name.toLowerCase().includes('text'))
-                                passed = true;
-                        }
-
-                        break;
-                    }
+                //string types
+                if (_mod.for === 'string') {
+                    if (_name.toLowerCase().includes('character') ||
+                        _name.toLowerCase().includes('text'))
+                        passed = true;
                 }
 
                 if (passed)
@@ -1664,8 +1740,72 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
     }
 })();
 
+/**
+ * Created by aclinton on 10/13/16.
+ */
+(function () {
+    'use strict';
+
+    angular
+        .module('app.service.fields', [])
+        .service('FieldService', Service);
+
+    Service.$inject = [];
+
+    function Service() {
+        this.parse = function (field_string) {
+            if(!field_string || !field_string.length)
+                return '';
+
+            var parts = field_string.split(',');
+
+            parts = parts.map(function (field){
+                return field.trim();
+            });
+
+            parts = parts.filter(function(field){
+                return field.length;
+            });
+
+            return {value: parts.join('|'), parts: parts};
+        };
+    }
+})();
+
 (function () {
 	'use strict';
 	angular
-		.module('app.services', []);
+		.module('app.services', [
+			'app.service.fields',
+			'app.service.metadata'
+		]);
+})();
+/**
+ * Created by aclinton on 10/13/16.
+ */
+(function () {
+    'use strict';
+
+    angular
+        .module('app.service.metadata', [])
+        .service('MetadataService', Service);
+
+    Service.$inject = [];
+
+    function Service(){
+        this.map = {
+            'string': ['character varying', 'text'],
+            'number': ['numeric', 'integer', 'decimal'],
+            'date': ['date']
+        };
+
+        this.findKey = function (dataType) {
+            for(var key in this.map){
+                if(this.map[key].indexOf(dataType) > -1)
+                    return key;
+            }
+
+            return null;
+        };
+    }
 })();
