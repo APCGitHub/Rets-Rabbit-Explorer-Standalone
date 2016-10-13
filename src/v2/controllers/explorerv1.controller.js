@@ -8,9 +8,9 @@
         .module('app.controller.explore.v1', [])
         .controller('ExploreV1Ctrl', Controller);
 
-    Controller.$inject = ['$scope', '$timeout', '$document', 'V1QueryFactory', 'ngToast', 'V1ModifiersFactory'];
+    Controller.$inject = ['$scope', '$timeout', '$document', 'V1QueryFactory', 'ngToast', 'V1ModifiersFactory', 'FieldService', 'MetadataService'];
 
-    function Controller($scope, $timeout, $document, V1QueryFactory, ngToast, V1ModifiersFactory) {
+    function Controller($scope, $timeout, $document, V1QueryFactory, ngToast, V1ModifiersFactory, FieldService, MetadataService) {
         var vm = this;
 
         init();
@@ -55,6 +55,7 @@
                     authenticating: false
                 },
                 query: {
+                    time_elapsed: null,
                     string: '',
                     fetching: false,
                     params: [],
@@ -211,7 +212,7 @@
             }
         }
 
-        function _queryString(encode_params) {
+        function _queryString() {
             var url = '';
 
             if(!vm.data.metadata.fields || !vm.data.metadata.fields.length)
@@ -220,45 +221,77 @@
             //loop through each user added query param
             for(var i = 0, len = vm.data.query.params.length; i < len; i++){
                 var p = vm.data.query.params[i];
+                var metadatas = [];
+                var matched_all_field_names = true;
+                var fields = FieldService.parse(p.field);
 
-                var metadata = null;
-                //see if the param is in the metadata or not
-                for(var j = 0, len2 = vm.data.metadata.fields.length; j < len2; j++){
-                    if(vm.data.metadata.fields[j].Name == p.field){
-                        metadata = vm.data.metadata.fields[j];
+                //iterate through the possible comma separate field list
+                for(var ii = 0; ii < fields.parts.length; ii++){
+                    var field_name = fields.parts[ii];
+                    var _found = false;
+
+                    //see if the param is in the metadata or not
+                    for(var j = 0, len2 = vm.data.metadata.fields.length; j < len2; j++){
+                        if(vm.data.metadata.fields[j].Name == field_name){
+                            metadatas.push(vm.data.metadata.fields[j]);
+                            _found = true;
+                            break;
+                        }
+                    }
+
+                    //the field wasn't in the meta so we stop
+                    if(!_found){
+                        matched_all_field_names = false;
                         break;
                     }
                 }
 
-                if(!metadata) //go to next field since it's not in metadata
+                if(!matched_all_field_names) //didn't match all field names so move on
                     continue;
 
+                //check to make sure all fields have the same meta
+                if(metadatas.length > 1){
+                    var all_match = true;
+                    for(var ii = 1; ii < metadatas.length; ii++){
+                        if(metadatas[0].Type !== metadatas[ii].Type){
+                            all_match = false;
+                            break;
+                        }
+                    }
+
+                    if(!all_match)
+                        continue;
+                }
+
                 if(p.value.left || p.value.right){ //if they entered a value
-                    var modifier = null;
+                    var modifier = null, metadata = metadatas[0];
 
                     //append the field name
-                    url += p.field;
+                    url += fields.value;
 
                     //find the modifier
                     var m;
+                    var modMap = MetadataService.map;
+
                     for(var z = 0; z < vm.data.query.modifiers.length; z++){
                         m = vm.data.query.modifiers[z];
 
                         //need to match 2 things
                         //1: cur mod value (+, - etc) with the selected mod
                         //2: cur mod for with found meta type
-                        if(m.value === p.modifier && V1ModifiersFactory.map()[m.for].indexOf(metadata.Type) > -1){
+                        if(m.value === p.modifier && modMap[m.for].indexOf(metadata.Type) > -1){
                             modifier = vm.data.query.modifiers[z];
                             break;
                         }
                     }
 
-                    //see what kind of modifier we have
+                    //see what kind of modifier we have: string, number, date
                     if(modifier){
                         var left = p.value.left,
                             right = p.value.right;
 
                         if(modifier.for === 'string'){
+                            //sometimes strings do multi value searches
                             left = _parseValue(left);
 
                             if(p.modifier === '='){
@@ -280,9 +313,6 @@
                             if(modifier.for === 'date')
                                 url += ':date';
 
-                            console.log(modifier.for);
-                            console.log(url);
-
                             if(modifier.value == '<->'){ //between
                                 url += '=' + left;
                                 url += '-';
@@ -302,10 +332,12 @@
                     }
                 }
 
+                //if not last, add ampersand
                 if((i+1) < len)
                     url += '&';
             }
 
+            //remove last if ampersand
             if(url.substr(url.length - 1) == '&')
                 url = url.slice(0, -1);
 
@@ -335,10 +367,14 @@
             var url = '/v1/' + vm.data.server.hash + '/listing/search?' + s;
 
             vm.data.query.results = null;
+            vm.data.query.time_elapsed = null;
             vm.data.query.fetching = true;
             $document.find('#query-results').empty();
 
+            var start = performance.now();
             vm.RR.get(url, null, null, function(err, res) {
+                var end = performance.now();
+
                 vm.data.query.fetching = false;
 
                 if(err){
@@ -347,6 +383,7 @@
                     //had to do this in a timeout...maybe because it is out of
                     //angular's digest loop?
                     $timeout(function () {
+                        vm.data.query.time_elapsed = (end-start).toFixed(0);
                         vm.data.query.results = res;//JSON.stringify(res, null, 4);
                         vm.data.query.total_records = res.total_records;
                         $document.find('#query-results').append(renderjson(res));
@@ -359,6 +396,10 @@
             return vm.data.server.hash != null && vm.data.auth.token != null;
         }
 
+        /**
+         * Add an empty field query builder line item
+         * @private
+         */
         function _addField() {
             var param = {
                 field: null,
@@ -408,6 +449,13 @@
             }
         }
 
+        /**
+         * This method parses a value which may be a comma separated list
+         *
+         * @param value_string
+         * @returns string
+         * @private
+         */
         function _parseValue(value_string){
             if(!value_string || !value_string.length){
                 return '';
@@ -415,6 +463,7 @@
 
             var parts = value_string.split(',');
 
+            //trim any whitespace
             parts = parts.map(function (term){
                 return term.trim();
             });
