@@ -43,7 +43,9 @@
     "rets-rabbit-js": "^1.0.8",
     "loaders.css": "^0.1.2",
     "renderjson": "^1.2.3",
-    "angular-sanitize": "^1.5.8"
+    "angular-sanitize": "^1.5.8",
+    "ngToast": "ngtoast#^2.0.0",
+    "bootstrap-datepicker": "^1.6.4"
   },
   "resolutions": {
     "angular": "1.5.7"
