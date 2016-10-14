@@ -141,7 +141,7 @@ gulp.task('js-dev', ['clean:dist', 'angular'], function() {
 			config.js.bootstrapPath + 'bootstrap.min.js',
 			'./bower_components/rets-rabbit-js/dist/rets_rabbit.umd.min.js',
 			config.js.angular.dist,
-			'./src/v2/**/*.js'
+			'./src/js/**/*.js'
 		])
 		.pipe(plumber())
 		.pipe(addStream.obj(prepareTemplates()))
@@ -156,7 +156,7 @@ gulp.task('js-prod', ['clean:dist', 'angular'], function() {
 			config.js.bootstrapPath + 'bootstrap.min.js',
 			'./bower_components/rets-rabbit-js/dist/rets_rabbit.umd.min.js',
 			config.js.angular.dist,
-			'./src/v2/**/*.js'
+			'./src/js/**/*.js'
 		])
 		.pipe(plumber())
 		.pipe(addStream.obj(prepareTemplates()))
