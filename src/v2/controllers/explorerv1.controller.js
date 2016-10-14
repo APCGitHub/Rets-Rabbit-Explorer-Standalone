@@ -61,11 +61,48 @@
                     params: [],
                     modifiers: V1ModifiersFactory.all(),
                     results: null,
-                    total_records: null
+                    total_records: null,
+                    sort_orders: [
+                        {
+                            name: 'Asc',
+                            value: 'asc'
+                        },
+                        {
+                            name: 'Desc',
+                            value: 'desc'
+                        }
+                    ],
+                    sort_options: [
+                        {
+                            name: 'Alpha',
+                            key: 'string',
+                            value: 'alpha'
+                        },
+                        {
+                            name: 'Numeric',
+                            key: 'number',
+                            value: 'numeric'
+                        },
+                        {
+                            name: 'Date',
+                            key: 'date',
+                            value: 'date'
+                        }
+                    ]
                 },
                 queries: V1QueryFactory.all(),
                 queryUrl: ''
             };
+
+            vm.limit = '';
+            vm.offset = '';
+            vm.orderby = '';
+            vm.sort_order = '';
+            vm.sort_option = '';
+            vm.num_photos = '';
+
+            vm.sort_option = vm.data.query.sort_options[0].value;
+            vm.sort_order = vm.data.query.sort_orders[0].value;
 
             $scope.params = vm.data.query.params;
 
@@ -77,10 +114,64 @@
             //this is how we can emulate vue computed props...super ugly -.-
             $scope.$watch('params', function (oldv, newv){
                 if(oldv != newv){
-                    var s = _queryString(true);
+                    var s = _queryString();
                     _queryUrl(s);
                 }
             }, true);
+
+            $scope.$watch(function () {
+                return vm.limit;
+            }, function (cur, orig) {
+                if(cur != orig){
+                    var s = _queryString();
+                    _queryUrl(s);
+                }
+            });
+
+            $scope.$watch(function () {
+                return vm.num_photos;
+            }, function (cur, orig) {
+                if(cur != orig){
+                    var s = _queryString();
+                    _queryUrl(s);
+                }
+            });
+
+            $scope.$watch(function () {
+                return vm.offset;
+            }, function (cur, orig) {
+                if(cur != orig){
+                    var s = _queryString();
+                    _queryUrl(s);
+                }
+            });
+
+            $scope.$watch(function () {
+                return vm.orderby;
+            }, function (cur, orig) {
+                if(cur != orig){
+                    var s = _queryString();
+                    _queryUrl(s);
+                }
+            });
+
+            $scope.$watch(function () {
+                return vm.sort_order;
+            }, function (cur, orig) {
+                if(cur != orig){
+                    var s = _queryString();
+                    _queryUrl(s);
+                }
+            });
+
+            $scope.$watch(function () {
+                return vm.sort_option;
+            }, function (cur, orig) {
+                if(cur != orig){
+                    var s = _queryString();
+                    _queryUrl(s);
+                }
+            });
 
             //check the auth
             _checkAuth();
@@ -292,7 +383,7 @@
 
                         if(modifier.for === 'string'){
                             //sometimes strings do multi value searches
-                            left = _parseValue(left);
+                            left = FieldService.parseValue(left);
 
                             if(p.modifier === '='){
                                 url += p.modifier + left;
@@ -341,6 +432,54 @@
             if(url.substr(url.length - 1) == '&')
                 url = url.slice(0, -1);
 
+            //orderby and sort_order
+            if(vm.orderby && vm.sort_order){
+                var meta = null;
+                for(var i = 0, len = vm.data.metadata.fields.length; i < len; i++){
+                    if(vm.data.metadata.fields[i].Name === vm.orderby){
+                        meta = vm.data.metadata.fields[i];
+                        break;
+                    }
+                }
+
+                if(meta){
+                    url += '&orderby=' + vm.orderby;
+                    url += '&sort_order=' + vm.sort_order;
+
+                    if(vm.sort_option){
+                        var type = MetadataService.findKey(meta.Type);
+
+                        if(type !== 'string'){
+                            url += '&sort_option=';
+
+                            if (type === 'number'){
+                                url += 'numeric';
+                            }
+
+                            if(type === 'date'){
+                                url += 'date';
+                            }
+                        }
+                    }
+                }
+            }
+
+            //num photos
+            if(vm.num_photos){
+                url += '&num_photos=' + vm.num_photos;
+            }
+
+            //limit and offset
+            if(vm.limit){
+                url += '&limit=' + vm.limit;
+
+                if(vm.offset){
+                    url += '&offset=' + vm.offset;
+                } else {
+                    url += '&offset=0';
+                }
+            }
+
             return url;
         }
 
@@ -385,7 +524,7 @@
                     $timeout(function () {
                         vm.data.query.time_elapsed = (end-start).toFixed(0);
                         vm.data.query.results = res;//JSON.stringify(res, null, 4);
-                        vm.data.query.total_records = res.total_records;
+                        vm.data.query.total_records = res.results.length;
                         $document.find('#query-results').append(renderjson(res));
                     }, 100);
                 }
@@ -402,12 +541,12 @@
          */
         function _addField() {
             var param = {
-                field: null,
+                field: '',
                 value: {
                     left: '',
                     right: ''
                 },
-                modifier: null
+                modifier: ''
             };
 
             //$('.datepicker').datepicker();
@@ -437,38 +576,58 @@
         function _fillQuery(q){
             vm.data.query.params = [];
 
-            for(var i = 0; i < q.length; i++){
-                vm.data.query.params.push(q[i]);
+            for(var i = 0; i < q.fields.length; i++){
+                vm.data.query.params.push(q.fields[i]);
             }
 
+            //do this so we can use a $scope.$watch to catch changes in deep comparison
             $scope.params = vm.data.query.params;
+
+            if(q.sorting){
+                if(q.sorting.orderby){
+                    vm.orderby = q.sorting.orderby;
+                } else {
+                    vm.orderby = '';
+                }
+
+                if(q.sorting.sort_order){
+                    vm.sort_order = q.sorting.sort_order;
+                } else {
+                    vm.sort_order = '';
+                }
+
+                if(q.sorting.sort_option){
+                    vm.sort_option = q.sorting.sort_option;
+                } else {
+                    vm.sort_option = '';
+                }
+            } else {
+                vm.orderby = '';
+                vm.sort_order = '';
+                vm.sort_option = '';
+            }
+
+            if(q.pagination){
+                if(q.pagination.limit){
+                    vm.limit = q.pagination.limit;
+                } else {
+                    vm.limit = '';
+                }
+
+                if(q.pagination.offset){
+                    vm.offset = q.pagination.offset;
+                } else {
+                    vm.offset = '';
+                }
+            } else {
+                vm.limit = '';
+                vm.offset = '';
+            }
 
             if(vm.data.query.params.length){
                 var s = _queryString(true);
                 _queryUrl(s);
             }
-        }
-
-        /**
-         * This method parses a value which may be a comma separated list
-         *
-         * @param value_string
-         * @returns string
-         * @private
-         */
-        function _parseValue(value_string){
-            if(!value_string || !value_string.length){
-                return '';
-            }
-
-            var parts = value_string.split(',');
-
-            //trim any whitespace
-            parts = parts.map(function (term){
-                return term.trim();
-            });
-
-            return parts.join('|');
         }
     }
 })();
