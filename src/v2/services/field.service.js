@@ -13,7 +13,7 @@
     function Service() {
         this.parse = function (field_string) {
             if(!field_string || !field_string.length)
-                return '';
+                return {value: '', parts: []};
 
             var parts = field_string.split(',');
 
@@ -26,6 +26,21 @@
             });
 
             return {value: parts.join('|'), parts: parts};
+        };
+
+        this.parseValue = function (value_string) {
+            if(!value_string || !value_string.length){
+                return '';
+            }
+
+            var parts = value_string.split(',');
+
+            //trim any whitespace
+            parts = parts.map(function (term){
+                return term.trim();
+            });
+
+            return parts.join('|');
         };
     }
 })();
