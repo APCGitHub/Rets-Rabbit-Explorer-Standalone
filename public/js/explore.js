@@ -726,12 +726,16 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
         .module('app.config', [])
         .config(Config);
 
-    Config.$inject = ["$stateProvider", "$urlRouterProvider", "$locationProvider", "ApiConfigProvider"];
+    Config.$inject = ["$stateProvider", "$urlRouterProvider", "ApiConfigProvider"];
 
-    function Config($stateProvider, $urlRouterProvider, $locationProvider, ApiProvider) {
+    function Config($stateProvider, $urlRouterProvider, ApiProvider) {
         ApiProvider.setBaseUrl("https://stage.retsrabbit.com/");
         ApiProvider.setClientId("retsrabbit");
         ApiProvider.setClientSecret("retsrabbit");
+
+        // ApiProvider.setBaseUrl('http://retsrabbit.app/');
+        // ApiProvider.setClientId('E1bi6hyy7nLxjlicqE2cDhyUykmA11KPoK9cSbr');
+        // ApiProvider.setClientSecret('x8EZaK74sYmkQLOk4CJBhwLJP0McajzKro6RY6j');
 
         $stateProvider
             .state('app', {
@@ -1475,9 +1479,9 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
         .module('app.controller.explore.v2', [])
         .controller('ExploreV2Ctrl', Controller);
 
-    Controller.$inject = ['$scope', '$window', '$document', '$timeout', 'MetadataFactory', 'QueryFactory', 'RRAuthFactory'];
+    Controller.$inject = ['$scope', '$document', 'MetadataFactory', 'QueryFactory', 'RRAuthFactory'];
 
-    function Controller($scope, $window, $document, $timeout, MetadataFactory, QueryFactory, AuthFactory) {
+    function Controller($scope, $document, MetadataFactory, QueryFactory, AuthFactory) {
     	var vm = this;
 
     	init();
@@ -1515,7 +1519,6 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
             vm.filterMeta = _filterMeta;
             vm.fillQuery = _fillQuery;
             vm.toggleQueryInfo = _toggleQueryInfo;
-            vm.startTutorial = _startTutorial;
     	}
 
         /* --- FUNCTIONS --- */
@@ -1550,13 +1553,6 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
         function _toggleQueryInfo() {
             vm.data.query_info.hidden = !vm.data.query_info.hidden;
             //do other stuff if necessary
-        }
-
-        function _startTutorial() {
-            $document.scrollTopAnimated(0, 200).then(function() {
-                $scope.data.tutorial.active = true;
-                $scope.data.tutorial.example_queries = true;
-            });
         }
     }
 })();
