@@ -1,18 +1,17 @@
 (function() {
     'use strict';
     angular
-        .module('app.controller.explorer', [])
-        .controller('ExplorerCtrl', Controller);
+        .module('app.controller.explore.v2', [])
+        .controller('ExploreV2Ctrl', Controller);
 
-    Controller.$inject = ['$scope', '$window', '$document', '$timeout', 'MetadataFactory', 'QueryFactory'];
+    Controller.$inject = ['$scope', '$document', 'MetadataFactory', 'QueryFactory', 'RRAuthFactory'];
 
-    function Controller($scope, $window, $document, $timeout, MetadataFactory, QueryFactory) {
+    function Controller($scope, $document, MetadataFactory, QueryFactory, AuthFactory) {
     	var vm = this;
 
     	init();
 
     	function init () {
-            console.log('Init the explorer controller');
     		vm.data = {
                 tutoral: {
                     hidden: true
@@ -30,12 +29,21 @@
                 fillQuery: null
             };
 
+            var token = window.localStorage.getItem('token');
+
+            if(token === 'undefined' || token == null || token === ''){
+                AuthFactory.getToken().then(function (res){
+                    console.log(res);
+                }, function (err){
+                    console.log(err);
+                });
+            }
+
 
             vm.toggleMeta = _toggleMeta;
             vm.filterMeta = _filterMeta;
             vm.fillQuery = _fillQuery;
             vm.toggleQueryInfo = _toggleQueryInfo;
-            vm.startTutorial = _startTutorial;
     	}
 
         /* --- FUNCTIONS --- */
@@ -70,13 +78,6 @@
         function _toggleQueryInfo() {
             vm.data.query_info.hidden = !vm.data.query_info.hidden;
             //do other stuff if necessary
-        }
-
-        function _startTutorial() {
-            $document.scrollTopAnimated(0, 200).then(function() {
-                $scope.data.tutorial.active = true;
-                $scope.data.tutorial.example_queries = true;
-            });
         }
     }
 })();

@@ -1,0 +1,259 @@
+<div class="jumbotron">
+    <div id="tutorial-example-queries">
+        <h3>Example Queries
+            <button class="right btn btn-info" ng-click="ExplorerV1.data.queriesCollapsed = !ExplorerV1.data.queriesCollapsed">
+                <span ng-show="ExplorerV1.data.queriesCollapsed">Show</span>
+                <span ng-hide="ExplorerV1.data.queriesCollapsed">Hide</span>
+            </button>
+        </h3>
+        <p>Test out the API with these prebuilt queries!</p>
+    </div>
+    <div class="row collapse in" uib-collapse="ExplorerV1.data.queriesCollapsed">
+        <div ng-repeat="query in ExplorerV1.data.queries">
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{query.title}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{query.description}}
+                        <br>
+                        <br>
+                        <a ng-class="{'disabled': !ExplorerV1.ready()}" href="#explorer-box" class="btn btn-success" offset="80" du-smooth-scroll ng-click="ExplorerV1.fillQuery(query.query)">Try it out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="explorer-wrapper">
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
+            <h3 class="text-center">Request</h3>
+            <div class="request margin-t-sm">
+                <code class="full-width">{{ ExplorerV1.data.queryUrl }}</code>
+            </div>
+        </div>
+    </div>
+    <div class="row margin-t-lg" id="explorer-box">
+        <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
+            <h3 class="text-center">Build Query</h3>
+            <form role="form" class="form-horizontal" ng-submit="ExplorerV1.search()">
+                <h4 class="text-center" ng-show="ExplorerV1.data.query.params.length">Fields</h4>
+                <div class="form-group" ng-repeat="param in ExplorerV1.data.query.params track by $index">
+                    <label for="Field" class="col-xs-3 control-label text-center margin-t-sm visible-xs">
+                        Field:
+                    </label>
+                    <div class="col-sm-4 col-xs-9 margin-t-sm">
+                        <input id="Field" class="form-control" placeholder="Field" ng-model="ExplorerV1.data.query.params[$index].field">
+                    </div>
+                    <label for="modifier" class="col-xs-3 control-label text-center margin-t-sm visible-xs">
+                        Modifier:
+                    </label>
+                    <div class="col-sm-3 col-xs-9 margin-t-sm">
+                        <select name="modifier"
+                                ng-model="ExplorerV1.data.query.params[$index].modifier"
+                                class="form-control"
+                                ng-options="mod.value as mod.name for mod in ExplorerV1.data.query.modifiers | showModifier:ExplorerV1.data.query.params[$index].field:ExplorerV1.data.metadata.fields">
+                            <option value="">Modifier</option>
+                        </select>
+                    </div>
+                    <label for="value" class="col-xs-3 control-label text-center margin-t-sm visible-xs">
+                        Value:
+                    </label>
+                    <div class="col-sm-4 col-xs-9 margin-t-sm">
+                        <input class="form-control" ng-show="ExplorerV1.data.query.params[$index].modifier != '<->'" placeholder="Value" ng-model="ExplorerV1.data.query.params[$index].value.left">
+                        <div class="row" ng-show="ExplorerV1.data.query.params[$index].modifier == '<->'">
+                            <div class="col-sm-6">
+                                <input class="form-control" placeholder="Value" ng-model="ExplorerV1.data.query.params[$index].value.left">
+                            </div>
+                            <div class="col-sm-6">
+                                <input class="form-control" placeholder="Value" ng-model="ExplorerV1.data.query.params[$index].value.right">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="btn btn-danger pull-right margin-t-sm" ng-click="ExplorerV1.removeParam($index)">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-info" ng-show="ExplorerV1.data.query.params.length < 1">
+                    <p class="text-center pv"><strong>Click the "Add Field" button to get started.</strong></p>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button ng-click="ExplorerV1.addField()" class="btn btn-success" type="button">
+                            <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Field
+                        </button>
+                    </div>
+                </div>
+                <div ng-show="ExplorerV1.data.query.params.length > 0">
+                    <hr>
+                    <h4 class="text-center">Sorting &amp; Pagination</h4>
+                    <div class="form-group">
+                        <label for="limit" class="col-xs-5 col-sm-2 control-label text-center">
+                            Limit:
+                        </label>
+                        <div class="col-sm-2 col-xs-7">
+                            <input id="limit" class="form-control" ng-model="ExplorerV1.limit" placeholder="Limit">
+                        </div>
+                        <label for="offset" class="col-xs-5 col-sm-2 control-label text-center">
+                            Offset:
+                        </label>
+                        <div class="col-sm-2 col-xs-7">
+                            <input id="offset" class="form-control" ng-model="ExplorerV1.offset" placeholder="Offset">
+                        </div>
+                        <label for="photo_num" class="col-xs-5 col-sm-2 control-label text-center">
+                            Num Photos:
+                        </label>
+                        <div class="col-sm-2 col-xs-7">
+                            <input id="photo_num" class="form-control" ng-model="ExplorerV1.num_photos" placeholder="# Photos">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="order_by" class="col-xs-5 col-sm-2 control-label text-center">
+                            Order By:
+                        </label>
+                        <div class="col-sm-2 col-xs-7">
+                            <input id="order_by" class="form-control" ng-model="ExplorerV1.orderby" placeholder="Order By">
+                        </div>
+                        <label for="sort_order" class="col-xs-5 col-sm-2 control-label text-center">
+                            Sort Order:
+                        </label>
+                        <div class="col-sm-2 col-xs-7">
+                            <select id="sort_order" class="form-control"
+                                    ng-model="ExplorerV1.sort_order"
+                                    ng-options="order.value as order.name for order in ExplorerV1.data.query.sort_orders">
+                                <option value="">Sort Order</option>
+                            </select>
+                        </div>
+                        <label for="sort_option" class="col-xs-5 col-sm-2 control-label text-center">
+                            Sort Option:
+                        </label>
+                        <div class="col-sm-2 col-xs-7">
+                            <select id="sort_option" class="form-control"
+                                    ng-model="ExplorerV1.sort_option"
+                                    ng-options="option.value as option.name for option in ExplorerV1.data.query.sort_options"
+                            >
+                                <option value="">Sort Option</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group margin-t-lg">
+                    <div class="col-sm-12">
+                        <button type="submit" ng-disabled="!ExplorerV1.ready() || ExplorerV1.data.query.fetching" class="btn btn-primary">
+                            <i class="fa fa-search" aria-hidden="true"></i>&nbsp;Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h3 ng-show="ExplorerV1.data.query.results" class="text-center">
+                        <span>Total Results: {{ExplorerV1.data.query.results.total_records}}</span>
+                    </h3>
+                </div>
+                <div class="col-sm-4">
+                    <h3 class="text-center">
+                        Results: <span ng-show="ExplorerV1.data.query.results">{{ExplorerV1.data.query.total_records}}</span>
+                    </h3>
+                </div>
+                <div class="col-sm-4">
+                    <h3 ng-show="ExplorerV1.data.query.time_elapsed" class="text-center">
+                        <span>{{ExplorerV1.data.query.time_elapsed}}ms</span>
+                    </h3>
+                </div>
+            </div>
+            <code class="full-width text-center" ng-show="!ExplorerV1.data.query.results">
+                <div ng-show="!ExplorerV1.data.query.fetching">Click "Search" to hit the Retsrabbit V2 API!</div>
+                <div class="loader" ng-show="ExplorerV1.data.query.fetching">
+                    <div class="loader-inner ball-pulse-rise"></div>
+                </div>
+            </code>
+
+            <!-- JSON RESPONSE -->
+            <div id="query-results">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="sidebar metadata" ng-hide="ExplorerV1.data.metadata.hidden">
+    <div class="handle" id="tutorial-fields" ng-click="ExplorerV1.toggleM()" ng-class="{open: !ExplorerV1.data.metadata.hidden}">
+        Fields
+    </div>
+    <div class="sidebar-content-wrapper">
+        <div class="field-search">
+            <input type="text" ng-model="ExplorerV1.data.metadata.search" placeholder="Search..." class="form-control">
+        </div>
+        <div class="field-list">
+            <ul>
+                <li ng-repeat="field in ExplorerV1.data.metadata.fields | filter:ExplorerV1.data.metadata.search | orderBy:'Name'">
+                    {{field.Name}}:<span>{{field.Type}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="sidebar query-info" ng-hide="ExplorerV1.data.info.hidden">
+    <div class="handle" id="tutorial-query-info" ng-click="ExplorerV1.toggleQueryInfo()" ng-class="{open: !ExplorerV1.data.info.hidden}">
+        Query
+    </div>
+    <div class="sidebar-content-wrapper">
+        <h4 class="text-center">Listings</h4>
+        <h5 class="text-center text-white">Read the full <a href="http://retsrabbit.com/docs" target="_blank">docs</a></h5>
+        <hr>
+        <div class="scrollable">
+            <ul>
+                <li>
+                    <div class="filter-type">Basic Search:</div>
+                    <p>/v1/&lt;server_hash&gt;/listing/search?field1=value1&field2=value2</p>
+                </li>
+                <li>
+                    <div class="filter-type">City Search</div>
+                    <p>/v1/&lt;server_hash&gt;/listing/search?City=Anytown</p>
+                </li>
+                <li>
+                    <div class="filter-type">Multiple Values</div>
+                    <p>search?City=Columbus|Cleveland</p>
+                </li>
+                <li>
+                    <div class="filter-type">Wildcard</div>
+                    <ul>
+                        <li>:startswith => <span class="text-white">City:startswith=fort</span></li>
+                        <li>:endswith => <span class="text-white">City:endswith=bus</span></li>
+                        <li>:indexof => <span class="text-white">City:indexof=est</span></li>
+                        <li>:nocase => <span class="text-white">City:nocase=detroit</span></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="filter-type">Numeric Ranges</div>
+                    <ul>
+                        <li>Less Than: <span class="text-white">search?ListPrice=50000-</span></li>
+                        <li>Between: <span class="text-white">search?ListPrice=50000-70000</span></li>
+                        <li>Over: <span class="text-white">search?ListPrice=70000%2B</span></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="filter-type">Dates</div>
+                    <p>:date => <span class="text-white">search?insert_date:date=2015%2F01%2F01-2015%2F06%2F01</span></p>
+                </li>
+                <li>
+                    <div class="filter-type">Complex</div>
+                    <p>search?City|County:startswith=ventura
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+

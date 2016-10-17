@@ -1,7 +1,7 @@
-@import "bootstrap";
-@import "font-awesome";
-@import "variables";
-@import "helpers";
+@import "./bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "./bower_components/font-awesome/scss/font-awesome";
+@import "partials/utilities";
+@import "partials/colors";
 
 body {
     padding-top: 50px;
@@ -13,6 +13,10 @@ body {
         display: inline-block;
         margin-right: 10px;
     }
+}
+
+.jumbotron {
+    margin-top: 30px;
 }
 
 .nav {
@@ -47,6 +51,36 @@ body {
     background: $orange-darker;
 }
 
+.bg-* {
+    p {
+        margin: 0 !important;
+    }
+}
+
+html, body {
+    height: 100%;
+}
+
+#wrap {
+    min-height: 100%;
+}
+
+#main {
+    overflow:auto;
+    padding-bottom:50px; /* this needs to be bigger than footer height*/
+}
+
+.footer {
+    position: relative;
+    margin-top: -4px; /* negative value of footer height */
+    height: 40px;
+    clear:both;
+    padding-top:20px;
+}
+
+.renderjson {
+    max-height: 500px;
+}
 /* --- SIDEBAR --- */
 
 .sidebar {
@@ -212,14 +246,35 @@ body {
     overflow-y:scroll;
 }
 
-.walkthrough-element {
-    &.walkthrough-text {
-        background-color: transparent !important;
-        white-space: pre-wrap;
-        font-size:1.3em;
+code {
+    &.full-width {
+        display: block;
+        padding: 10px;
+        white-space: pre-wrap;       /* Since CSS 2.1 */
+        white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+        white-space: -pre-wrap;      /* Opera 4-6 */
+        white-space: -o-pre-wrap;    /* Opera 7 */
+        word-wrap: break-word;       /* Internet Explorer 5.5+ */
     }
-}
 
-.walkthrough-background {
-    
+    .loader {
+        .loader-inner > div {
+            background-color: $orange-primary;
+        }
+    }
+
+    &.code-sm {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    &.code-md {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    &.code-lg {
+        max-height: 600px;
+        overflow-y: auto;
+    }
 }
