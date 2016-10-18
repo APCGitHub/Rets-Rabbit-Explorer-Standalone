@@ -729,13 +729,13 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
     Config.$inject = ["$stateProvider", "$urlRouterProvider", "ApiConfigProvider"];
 
     function Config($stateProvider, $urlRouterProvider, ApiProvider) {
-        ApiProvider.setBaseUrl("https://stage.retsrabbit.com/");
-        ApiProvider.setClientId("retsrabbit");
-        ApiProvider.setClientSecret("retsrabbit");
+        // ApiProvider.setBaseUrl("https://stage.retsrabbit.com/");
+        // ApiProvider.setClientId("retsrabbit");
+        // ApiProvider.setClientSecret("retsrabbit");
 
-        // ApiProvider.setBaseUrl('http://retsrabbit.app/');
-        // ApiProvider.setClientId('E1bi6hyy7nLxjlicqE2cDhyUykmA11KPoK9cSbr');
-        // ApiProvider.setClientSecret('x8EZaK74sYmkQLOk4CJBhwLJP0McajzKro6RY6j');
+        ApiProvider.setBaseUrl('http://retsrabbit.app/');
+        ApiProvider.setClientId('E1bi6hyy7nLxjlicqE2cDhyUykmA11KPoK9cSbr');
+        ApiProvider.setClientSecret('x8EZaK74sYmkQLOk4CJBhwLJP0McajzKro6RY6j');
 
         $stateProvider
             .state('app', {
@@ -823,6 +823,372 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
 (function() {
     'use strict';
     angular
+        .module('app.factories', [
+            'app.factory.v1_queries',
+            'app.factory.modifiers'
+        ]);
+})();
+
+/**
+ * Created by aclinton on 10/13/16.
+ */
+(function () {
+    'use strict';
+
+    angular
+        .module('app.factory.modifiers', [])
+        .factory('V1ModifiersFactory', Factory);
+
+    Factory.$inject = [];
+
+    function Factory() {
+        var factory = {
+            all: _all
+        };
+
+        return factory;
+
+        function _all() {
+            var m = [
+                {
+                    name: 'Equals',
+                    value: '=',
+                    for: 'string'
+                },
+                {
+                    name: 'Starts With',
+                    value: ':startswith',
+                    for: 'string'
+                }, {
+                    name: 'Ends With',
+                    value: ':endswith',
+                    for: 'string'
+                }, {
+                    name: 'Contains',
+                    value: ':indexof',
+                    for: 'string'
+                }, {
+                    name: 'No Case',
+                    value: ':nocase',
+                    for: 'string'
+                },/* number modifiers */ {
+                    name: 'Greater',
+                    value: '+',
+                    for: 'number'
+                }, {
+                    name: 'Less',
+                    value: '-',
+                    for: 'number'
+                }, {
+                    name: 'Between',
+                    value: '<->',
+                    for: 'number'
+                }, {
+                    name: 'Equals',
+                    value: '=',
+                    for: 'number'
+                }, /* date modifiers */ {
+                    name: 'Greater',
+                    value: '+',
+                    for: 'date'
+                }, {
+                    name: 'Less',
+                    value: '-',
+                    for: 'date'
+                }, {
+                    name: 'Between',
+                    value: '<->',
+                    for: 'date'
+                }, {
+                    name: 'Equals',
+                    value: '=',
+                    for: 'date'
+                }
+            ];
+
+            return m;
+        }
+    }
+})();
+
+/**
+ * Created by aclinton on 10/12/16.
+ */
+(function () {
+    'use strict';
+
+    angular
+        .module('app.factory.v1_queries', [])
+        .factory('V1QueryFactory', Factory);
+
+    Factory.$inject = [];
+
+    function Factory() {
+        var factory = {
+            all: _all
+        };
+
+        return factory;
+
+        function _all(){
+            var q = [{
+                title: 'Price: Greater Than',
+                description: 'This is a simple price check for any listings having ListPrice greater than $95,000',
+                query: {
+                    fields: [{
+                        field: 'ListPrice',
+                        value: {
+                            left: '95000',
+                            right: ''
+                        },
+                        modifier: '+',
+                    }],
+                    sorting: null,
+                    pagination: null
+                }
+            }, {
+                title: 'Price: Less Than',
+                description: 'This is a simple price check for any listing having ListPrice less than $55,000',
+                query: {
+                    fields: [
+                        {
+                            field: 'ListPrice',
+                            value: {
+                                left: '55000',
+                                right: ''
+                            },
+                            modifier: '-',
+                        }
+                    ],
+                    sorting: null,
+                    pagination: null
+                }
+            }, {
+                title: 'Price: Between',
+                description: 'This is a simple price check for any listings having a ListPrice between $78,000 and $85,000',
+                query: {
+                    fields: [{
+                        field: 'ListPrice',
+                        value: {
+                            left: '78000',
+                            right: '85000'
+                        },
+                        modifier: '<->',
+                    }],
+                    sorting: null,
+                    pagination: null
+                }
+            }, {
+                title: 'Date: Between',
+                description: 'This is a simple date search for listings having ListingContractDate between 2016/04/01 and 2016/05/26',
+                query: {
+                    fields: [{
+                        field: 'ListingContractDate',
+                        value: {
+                            left: '2016/04/01',
+                            right: '2016/05/26'
+                        },
+                        modifier: '<->',
+                    }],
+                    sorting: null,
+                    pagination: null
+                }
+            }, {
+                title: 'Multiple Values',
+                description: 'This is a more complex query searching for listings which have the city names Dublin or Worthington',
+                query: {
+                    fields: [{
+                        field: 'City',
+                        value: {
+                            left: 'Dublin, Worthington',
+                            right: ''
+                        },
+                        modifier: '=',
+                    }],
+                    sorting: null,
+                    pagination: null
+                }
+            }, {
+                title: 'Combination of Fields',
+                description: 'This is a more complex query which searches multiple fields (City, StreetName) for a single value, \'dub\'',
+                query: {
+                    fields: [
+                        {
+                            field: 'City, StreetName',
+                            value: {
+                                left: 'dub',
+                                right: ''
+                            },
+                            modifier: ':startswith'
+                        }
+                    ],
+                    sorting: null,
+                    pagination: null
+                }
+            }, {
+                title: 'Sort By ListPrice',
+                description: 'This query runs a search for listings having city values of either Dublin or Worthington sort descending by ListPrice',
+                query: {
+                    fields: [{
+                        field: 'City',
+                        value: {
+                            left: 'Dublin, Worthington',
+                            right: ''
+                        },
+                        modifier: '=',
+                    }],
+                    sorting: {
+                        orderby: 'ListPrice',
+                        sort_order: 'desc',
+                        sort_option: 'numeric'
+                    },
+                    pagination: null
+                }
+            }, {
+                title: 'Pagination',
+                description: 'This query shows how you can use offset and limit to paginate through a large query result',
+                query: {
+                    fields: [
+                        {
+                            field: 'ListPrice',
+                            value: {
+                                left: '122000',
+                                right: '129000'
+                            },
+                            modifier: '<->'
+                        }, {
+                            field: 'City',
+                            value: {
+                                left: 'Dublin, Worthington',
+                                right: ''
+                            },
+                            modifier: '='
+                        }
+                    ],
+                    sorting: {
+                        orderby: 'ListPrice',
+                        sort_order: 'asc',
+                        sort_option: 'numeric'
+                    },
+                    pagination: {
+                        limit: 3,
+                        offset: 1
+                    }
+                }
+            }];
+
+            return q;
+        }
+    }
+})();
+
+/**
+ * Created by aclinton on 10/12/16.
+ */
+(function () {
+    'use strict';
+
+    angular
+        .module('app.filters', [
+            'app.filter.show_modifier'
+        ]);
+})();
+
+/**
+ * Created by aclinton on 10/12/16.
+ */
+(function () {
+    'use strict';
+
+    angular
+        .module('app.filter.show_modifier', [])
+        .filter('showModifier', Filter);
+
+    Filter.$inject = ['FieldService', 'MetadataService'];
+
+    function Filter(FieldService, MetadataService) {
+        return function (mods, field, metadata) {
+            if(!field || field === '' || !metadata || !metadata.length)
+                return mods;
+
+            //build list of allowed modifiers
+            var new_mods = [];
+
+            //field may be comma separated list
+            var field_data = FieldService.parse(field);
+
+            //store each field's meta in an array
+            var metas = [];
+
+            //check through each field to find it's meta
+            for(var j = 0; j < field_data.parts.length; j++) {
+                for(var jj = 0, len2 = metadata.length; jj < len2; jj++){
+                    if(metadata[jj].Name === field_data.parts[j]){
+                        metas.push(metadata[jj]);
+                        break;
+                    }
+                }
+            }
+
+            //at least one didn't match so we just return current_mods
+            if(metas.length != field_data.parts.length){
+                return new_mods;
+            }
+
+            //all field metas should have the same type
+            if(metas.length > 1){
+                var first_type = MetadataService.findKey(metas[0].Type);
+
+                for(var i = 1; i < metas.length; i++){
+                    if(first_type !== MetadataService.findKey(metas[i].Type))
+                        return new_mods;
+                }
+            }
+
+            for(var i = 0; i < mods.length; i ++) {
+                var _mod = mods[i];
+                var passed = false;
+
+                var _field = metas[0];
+                var _name = _field.Type;
+
+                //number types
+                if (_mod.for === 'number') {
+                    if (_name.toLowerCase() === 'integer')
+                        passed = true;
+
+                    if (_name.toLowerCase() === 'numeric')
+                        passed = true;
+
+                    if (_name.toLowerCase() === 'decimal')
+                        passed = true;
+                }
+
+                //date types
+                if(_mod.for === 'date'){
+                    if (_name.toLowerCase() === 'date')
+                        passed = true;
+                }
+
+                //string types
+                if (_mod.for === 'string') {
+                    if (_name.toLowerCase().includes('character') ||
+                        _name.toLowerCase().includes('text'))
+                        passed = true;
+                }
+
+                if (passed)
+                    new_mods.push(_mod);
+            }
+
+            return new_mods;
+        }
+    }
+})();
+
+(function() {
+    'use strict';
+    angular
         .module('app.controller.base', [])
         .controller('BaseCtrl', Controller);
 
@@ -864,10 +1230,14 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
         function init () {
             //init a RR client
             vm.RR = new RetsRabbit({
-                host: 'https',
-                client_id: 'retsrabbit',
-                client_secret: 'retsrabbit',
-                url: 'stage.retsrabbit.com/api',
+                // host: 'https',
+                // client_id: 'retsrabbit',
+                // client_secret: 'retsrabbit',
+                // url: 'stage.retsrabbit.com/api',
+                host: 'http',
+                client_id: 'E1bi6hyy7nLxjlicqE2cDhyUykmA11KPoK9cSbr',
+                client_secret: 'x8EZaK74sYmkQLOk4CJBhwLJP0McajzKro6RY6j',
+                url: 'retsrabbit.app/api',
                 token_key: 'access_token_v1'
             });
 
@@ -1596,372 +1966,6 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
         ]);
 })();
 
-
-(function() {
-    'use strict';
-    angular
-        .module('app.factories', [
-            'app.factory.v1_queries',
-            'app.factory.modifiers'
-        ]);
-})();
-
-/**
- * Created by aclinton on 10/13/16.
- */
-(function () {
-    'use strict';
-
-    angular
-        .module('app.factory.modifiers', [])
-        .factory('V1ModifiersFactory', Factory);
-
-    Factory.$inject = [];
-
-    function Factory() {
-        var factory = {
-            all: _all
-        };
-
-        return factory;
-
-        function _all() {
-            var m = [
-                {
-                    name: 'Equals',
-                    value: '=',
-                    for: 'string'
-                },
-                {
-                    name: 'Starts With',
-                    value: ':startswith',
-                    for: 'string'
-                }, {
-                    name: 'Ends With',
-                    value: ':endswith',
-                    for: 'string'
-                }, {
-                    name: 'Contains',
-                    value: ':indexof',
-                    for: 'string'
-                }, {
-                    name: 'No Case',
-                    value: ':nocase',
-                    for: 'string'
-                },/* number modifiers */ {
-                    name: 'Greater',
-                    value: '+',
-                    for: 'number'
-                }, {
-                    name: 'Less',
-                    value: '-',
-                    for: 'number'
-                }, {
-                    name: 'Between',
-                    value: '<->',
-                    for: 'number'
-                }, {
-                    name: 'Equals',
-                    value: '=',
-                    for: 'number'
-                }, /* date modifiers */ {
-                    name: 'Greater',
-                    value: '+',
-                    for: 'date'
-                }, {
-                    name: 'Less',
-                    value: '-',
-                    for: 'date'
-                }, {
-                    name: 'Between',
-                    value: '<->',
-                    for: 'date'
-                }, {
-                    name: 'Equals',
-                    value: '=',
-                    for: 'date'
-                }
-            ];
-
-            return m;
-        }
-    }
-})();
-
-/**
- * Created by aclinton on 10/12/16.
- */
-(function () {
-    'use strict';
-
-    angular
-        .module('app.factory.v1_queries', [])
-        .factory('V1QueryFactory', Factory);
-
-    Factory.$inject = [];
-
-    function Factory() {
-        var factory = {
-            all: _all
-        };
-
-        return factory;
-
-        function _all(){
-            var q = [{
-                title: 'Price: Greater Than',
-                description: 'This is a simple price check for any listings having ListPrice greater than $95,000',
-                query: {
-                    fields: [{
-                        field: 'ListPrice',
-                        value: {
-                            left: '95000',
-                            right: ''
-                        },
-                        modifier: '+',
-                    }],
-                    sorting: null,
-                    pagination: null
-                }
-            }, {
-                title: 'Price: Less Than',
-                description: 'This is a simple price check for any listing having ListPrice less than $55,000',
-                query: {
-                    fields: [
-                        {
-                            field: 'ListPrice',
-                            value: {
-                                left: '55000',
-                                right: ''
-                            },
-                            modifier: '-',
-                        }
-                    ],
-                    sorting: null,
-                    pagination: null
-                }
-            }, {
-                title: 'Price: Between',
-                description: 'This is a simple price check for any listings having a ListPrice between $78,000 and $85,000',
-                query: {
-                    fields: [{
-                        field: 'ListPrice',
-                        value: {
-                            left: '78000',
-                            right: '85000'
-                        },
-                        modifier: '<->',
-                    }],
-                    sorting: null,
-                    pagination: null
-                }
-            }, {
-                title: 'Date: Between',
-                description: 'This is a simple date search for listings having ListingContractDate between 2016/04/01 and 2016/05/26',
-                query: {
-                    fields: [{
-                        field: 'ListingContractDate',
-                        value: {
-                            left: '2016/04/01',
-                            right: '2016/05/26'
-                        },
-                        modifier: '<->',
-                    }],
-                    sorting: null,
-                    pagination: null
-                }
-            }, {
-                title: 'Multiple Values',
-                description: 'This is a more complex query searching for listings which have the city names Dublin or Worthington',
-                query: {
-                    fields: [{
-                        field: 'City',
-                        value: {
-                            left: 'Dublin, Worthington',
-                            right: ''
-                        },
-                        modifier: '=',
-                    }],
-                    sorting: null,
-                    pagination: null
-                }
-            }, {
-                title: 'Combination of Fields',
-                description: 'This is a more complex query which searches multiple fields (City, StreetName) for a single value, \'dub\'',
-                query: {
-                    fields: [
-                        {
-                            field: 'City, StreetName',
-                            value: {
-                                left: 'dub',
-                                right: ''
-                            },
-                            modifier: ':startswith'
-                        }
-                    ],
-                    sorting: null,
-                    pagination: null
-                }
-            }, {
-                title: 'Sort By ListPrice',
-                description: 'This query runs a search for listings having city values of either Dublin or Worthington sort descending by ListPrice',
-                query: {
-                    fields: [{
-                        field: 'City',
-                        value: {
-                            left: 'Dublin, Worthington',
-                            right: ''
-                        },
-                        modifier: '=',
-                    }],
-                    sorting: {
-                        orderby: 'ListPrice',
-                        sort_order: 'desc',
-                        sort_option: 'numeric'
-                    },
-                    pagination: null
-                }
-            }, {
-                title: 'Pagination',
-                description: 'This query shows how you can use offset and limit to paginate through a large query result',
-                query: {
-                    fields: [
-                        {
-                            field: 'ListPrice',
-                            value: {
-                                left: '122000',
-                                right: '129000'
-                            },
-                            modifier: '<->'
-                        }, {
-                            field: 'City',
-                            value: {
-                                left: 'Dublin, Worthington',
-                                right: ''
-                            },
-                            modifier: '='
-                        }
-                    ],
-                    sorting: {
-                        orderby: 'ListPrice',
-                        sort_order: 'asc',
-                        sort_option: 'numeric'
-                    },
-                    pagination: {
-                        limit: 3,
-                        offset: 1
-                    }
-                }
-            }];
-
-            return q;
-        }
-    }
-})();
-
-/**
- * Created by aclinton on 10/12/16.
- */
-(function () {
-    'use strict';
-
-    angular
-        .module('app.filters', [
-            'app.filter.show_modifier'
-        ]);
-})();
-
-/**
- * Created by aclinton on 10/12/16.
- */
-(function () {
-    'use strict';
-
-    angular
-        .module('app.filter.show_modifier', [])
-        .filter('showModifier', Filter);
-
-    Filter.$inject = ['FieldService', 'MetadataService'];
-
-    function Filter(FieldService, MetadataService) {
-        return function (mods, field, metadata) {
-            if(!field || field === '' || !metadata || !metadata.length)
-                return mods;
-
-            //build list of allowed modifiers
-            var new_mods = [];
-
-            //field may be comma separated list
-            var field_data = FieldService.parse(field);
-
-            //store each field's meta in an array
-            var metas = [];
-
-            //check through each field to find it's meta
-            for(var j = 0; j < field_data.parts.length; j++) {
-                for(var jj = 0, len2 = metadata.length; jj < len2; jj++){
-                    if(metadata[jj].Name === field_data.parts[j]){
-                        metas.push(metadata[jj]);
-                        break;
-                    }
-                }
-            }
-
-            //at least one didn't match so we just return current_mods
-            if(metas.length != field_data.parts.length){
-                return new_mods;
-            }
-
-            //all field metas should have the same type
-            if(metas.length > 1){
-                var first_type = MetadataService.findKey(metas[0].Type);
-
-                for(var i = 1; i < metas.length; i++){
-                    if(first_type !== MetadataService.findKey(metas[i].Type))
-                        return new_mods;
-                }
-            }
-
-            for(var i = 0; i < mods.length; i ++) {
-                var _mod = mods[i];
-                var passed = false;
-
-                var _field = metas[0];
-                var _name = _field.Type;
-
-                //number types
-                if (_mod.for === 'number') {
-                    if (_name.toLowerCase() === 'integer')
-                        passed = true;
-
-                    if (_name.toLowerCase() === 'numeric')
-                        passed = true;
-
-                    if (_name.toLowerCase() === 'decimal')
-                        passed = true;
-                }
-
-                //date types
-                if(_mod.for === 'date'){
-                    if (_name.toLowerCase() === 'date')
-                        passed = true;
-                }
-
-                //string types
-                if (_mod.for === 'string') {
-                    if (_name.toLowerCase().includes('character') ||
-                        _name.toLowerCase().includes('text'))
-                        passed = true;
-                }
-
-                if (passed)
-                    new_mods.push(_mod);
-            }
-
-            return new_mods;
-        }
-    }
-})();
 
 /**
  * Created by aclinton on 10/13/16.
