@@ -124,7 +124,7 @@ gulp.task('clean:dist', function() {
 	return gulp.src('public/js/dist', {
 		read: false
 	})
-		.pipe(rm())
+		.pipe(rm());
 });
 
 //Compile all angular sources to be used in the js compilation tasks

@@ -240,6 +240,11 @@ html, body {
     }
 }
 
+.angular-google-map-container, #rr-map {
+    width: 100%;
+    height: 450px;
+}
+
 .scrollable {
     width: 100%;
     height: 100%;

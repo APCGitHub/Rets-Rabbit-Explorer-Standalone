@@ -6,6 +6,8 @@
 		'ngDisableScroll',
 		'ngSanitize',
 		'ngToast',
+		//'ngDisableScroll',
+		//'ng-walkthrough',
 		'duScroll',
 	  	'rr.api.v2.explorer',
 	 	'app.templates',
