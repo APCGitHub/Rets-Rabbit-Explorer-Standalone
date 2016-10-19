@@ -27,10 +27,13 @@ const config = {
 		src: './src/v2/',
 		angular: {
 			files: [
+				'./bower_components/lodash/dist/lodash.min.js',
 				'./bower_components/angular/angular.min.js',
+				'./bower_components/angular-google-maps/dist/angular-google-maps.min.js',
 				'./bower_components/rets-rabbit-angular/dist/rets-rabbit-angular.min.js',
 				'./bower_components/rr-api-explorer/dist/rr-explorer-2.min.js',
 				'./bower_components/angular-ui-router/release/angular-ui-router.min.js',
+				'./bower_components/angular-simple-logger/dist/angular-simple-logger.min.js',
 				'./bower_components/ngToast/dist/ngToast.min.js',
 				'./bower_components/angular-animate/angular-animate.min.js',
 				'./bower_components/angular-scroll/angular-scroll.min.js',
