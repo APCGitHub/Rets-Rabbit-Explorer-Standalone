@@ -6,9 +6,8 @@
 		'ngDisableScroll',
 		'ngSanitize',
 		'ngToast',
-		//'ngDisableScroll',
-		//'ng-walkthrough',
 		'duScroll',
+		'uiGmapgoogle-maps',
 	  	'rr.api.v2.explorer',
 	 	'app.templates',
 	 	'app.config',
@@ -20,3 +19,4 @@
 		'app.filters'
 	]);
 })();
+
