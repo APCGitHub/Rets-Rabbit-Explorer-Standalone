@@ -4,9 +4,9 @@
         .module('app.controller.explore.v2', [])
         .controller('ExploreV2Ctrl', Controller);
 
-    Controller.$inject = ['$scope', '$document', 'MetadataFactory', 'QueryFactory', 'RRAuthFactory'];
+    Controller.$inject = ['$scope', 'MetadataFactory', 'QueryFactory', 'RRAuthFactory', 'KeyStorageService'];
 
-    function Controller($scope, $document, MetadataFactory, QueryFactory, AuthFactory) {
+    function Controller($scope, MetadataFactory, QueryFactory, AuthFactory, KeyStorageService) {
     	var vm = this;
 
     	init();
@@ -29,10 +29,10 @@
                 fillQuery: null
             };
 
-            var token = window.localStorage.getItem('token');
+            var token = KeyStorageService.v2.getToken();
 
             if(token === 'undefined' || token == null || token === ''){
-                AuthFactory.getToken().then(function (res){
+                AuthFactory.getTokenV2().then(function (res){
                     console.log(res);
                 }, function (err){
                     console.log(err);
