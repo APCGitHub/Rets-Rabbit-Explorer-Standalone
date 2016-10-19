@@ -8,9 +8,9 @@
         .module('app.controller.explore.v1', [])
         .controller('ExploreV1Ctrl', Controller);
 
-    Controller.$inject = ['$scope', '$timeout', '$document', 'V1QueryFactory', 'ngToast', 'V1ModifiersFactory', 'FieldService', 'MetadataService'];
+    Controller.$inject = ['$scope', '$timeout', '$document', 'V1QueryFactory', 'ngToast', 'V1ModifiersFactory', 'FieldService', 'MetadataService', 'PropertyFactoryV1', 'KeyStorageService', 'RRAuthFactory'];
 
-    function Controller($scope, $timeout, $document, V1QueryFactory, ngToast, V1ModifiersFactory, FieldService, MetadataService) {
+    function Controller($scope, $timeout, $document, V1QueryFactory, ngToast, V1ModifiersFactory, FieldService, MetadataService, PropertyFactoryV1, KeyStorageService, RRAuthFactory) {
         var vm = this;
 
         init();
@@ -21,19 +21,6 @@
         });
 
         function init () {
-            //init a RR client
-            vm.RR = new RetsRabbit({
-                // host: 'https',
-                // client_id: 'retsrabbit',
-                // client_secret: 'retsrabbit',
-                // url: 'stage.retsrabbit.com/api',
-                host: 'http',
-                client_id: 'E1bi6hyy7nLxjlicqE2cDhyUykmA11KPoK9cSbr',
-                client_secret: 'x8EZaK74sYmkQLOk4CJBhwLJP0McajzKro6RY6j',
-                url: 'retsrabbit.app/api',
-                token_key: 'access_token_v1'
-            });
-
             //set render level to 3
             renderjson.set_show_to_level(3);
 
@@ -195,7 +182,7 @@
 
         /* === METHODS === */
         function _checkAuth() {
-            var token = window.localStorage.getItem('access_token_v1');
+            var token = KeyStorageService.v1.getToken();
 
             if(!token || token == 'null' || token == null){
                 _authenticate();
@@ -219,15 +206,13 @@
             });
 
             //Stores auth tokens for us
-            vm.RR.auth(function(err, res) {
+            RRAuthFactory.getTokenV1().then(function (res){
                 vm.data.auth.authenticating = false;
-
-                if(err){
-                    console.log(err);
-                } else {
-                    vm.data.auth.token = res.access_token;
-                    _servers();
-                }
+                vm.data.auth.token = res.access_token;
+                _servers();
+            }, function (res){
+                vm.data.auth.authenticating = false;
+                console.log(res);
             });
         }
 
@@ -245,13 +230,11 @@
                 // dismissOnTimeout: false
             });
 
-            vm.RR.get('/v1/' + vm.data.server.hash + '/metadata/explorer', null, null, function(err, res) {
-                if(err){
-                    console.log(err);
-                } else {
-                    vm.data.metadata.fields = res.data;
-                    _queryUrl();
-                }
+            PropertyFactoryV1.metadata().then(function (res){
+                vm.data.metadata.fields = res.data;
+                _queryUrl();
+            }, function (res){
+                console.log(res);
             });
         }
 
@@ -268,30 +251,25 @@
                 // dismissOnTimeout: false
             });
 
-            vm.RR.get('/v1/server', null, null, function (err, res) {
+            PropertyFactoryV1.servers().then(function (res) {
                 vm.data.server.fetching = false;
+                if (res.length) {
+                    for (var i = 0; i < res.length; i++) {
+                        if (res[i].name === 'Rets Rabbit Test V1') {
 
-                if(err){
-                    console.log(err);
-                } else {
-                    if(res.length) {
-                        for(var i = 0; i < res.length; i ++){
-                            if(res[i].name === 'Rets Rabbit Test V1'){
+                            vm.data.server.hash = res[i].server_hash;
 
-                                vm.data.server.hash = res[i].server_hash;
-
-                                //outside of angular digest so kick off manually
-                                $timeout(function () {
-                                    _queryUrl();
-                                }, 100);
-
-                                break;
-                            }
+                            //outside of angular digest so kick off manually
+                            _queryUrl();
+                            break;
                         }
                     }
-
-                    _metaData();
                 }
+
+                _metaData();
+            }, function (res){
+                vm.data.server.fetching = false;
+                console.log(res);
             });
         }
 
@@ -515,23 +493,18 @@
             $document.find('#query-results').empty();
 
             var start = performance.now();
-            vm.RR.get(url, null, null, function(err, res) {
+
+            PropertyFactoryV1.search(vm.data.server.hash, s).then(function (res){
                 var end = performance.now();
 
                 vm.data.query.fetching = false;
-
-                if(err){
-                    console.log(err);
-                } else {
-                    //had to do this in a timeout...maybe because it is out of
-                    //angular's digest loop?
-                    $timeout(function () {
-                        vm.data.query.time_elapsed = (end-start).toFixed(0);
-                        vm.data.query.results = res;//JSON.stringify(res, null, 4);
-                        vm.data.query.total_records = res.results.length;
-                        $document.find('#query-results').append(renderjson(res));
-                    }, 100);
-                }
+                vm.data.query.time_elapsed = (end-start).toFixed(0);
+                vm.data.query.results = res;//JSON.stringify(res, null, 4);
+                vm.data.query.total_records = res.results.length;
+                $document.find('#query-results').append(renderjson(res));
+            }, function (res){
+                console.log(res);
+                vm.data.query.fetching = false;
             });
         }
 
