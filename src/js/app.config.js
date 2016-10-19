@@ -11,9 +11,15 @@
         // ApiProvider.setClientId("retsrabbit");
         // ApiProvider.setClientSecret("retsrabbit");
 
-        ApiProvider.setBaseUrl('http://retsrabbit.app/');
-        ApiProvider.setClientId('E1bi6hyy7nLxjlicqE2cDhyUykmA11KPoK9cSbr');
-        ApiProvider.setClientSecret('x8EZaK74sYmkQLOk4CJBhwLJP0McajzKro6RY6j');
+        ApiProvider.v1.setBaseUrl('http://retsrabbit.app/');
+        ApiProvider.v1.setClientId('E1bi6hyy7nLxjlicqE2cDhyUykmA11KPoK9cSbr');
+        ApiProvider.v1.setClientSecret('x8EZaK74sYmkQLOk4CJBhwLJP0McajzKro6RY6j');
+        ApiProvider.v1.setStorageKey('access_token_v1');
+
+        ApiProvider.v2.setBaseUrl('http://retsrabbit.app/');
+        ApiProvider.v2.setClientId('E1bi6hyy7nLxjlicqE2cDhyUykmA11KPoK9cSbr');
+        ApiProvider.v2.setClientSecret('x8EZaK74sYmkQLOk4CJBhwLJP0McajzKro6RY6j');
+        ApiProvider.v2.setStorageKey('access_token_v2');
 
         uiGmapGoogleMapApiProvider.configure({
             key: 'AIzaSyBzsdkBN_oP1rS262mZzEJiJRPrmfQ52LE',
