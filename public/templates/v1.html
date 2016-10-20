@@ -28,129 +28,138 @@
 </div>
 
 <div class="explorer-wrapper">
-    <div class="row">
-        <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
-            <h3 class="text-center">Request</h3>
-            <div class="request margin-t-sm">
-                <code class="full-width">{{ ExplorerV1.data.queryUrl }}</code>
-            </div>
-        </div>
-    </div>
     <div class="row margin-t-lg" id="explorer-box">
-        <div class="col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2">
-            <h3 class="text-center">Build Query</h3>
-            <form role="form" class="form-horizontal" ng-submit="ExplorerV1.search()">
-                <h4 class="text-center" ng-show="ExplorerV1.data.query.params.length">Fields</h4>
-                <div class="form-group" ng-repeat="param in ExplorerV1.data.query.params track by $index">
-                    <label for="Field" class="col-xs-3 control-label text-center margin-t-sm visible-xs">
-                        Field:
-                    </label>
-                    <div class="col-sm-4 col-xs-9 margin-t-sm">
-                        <input id="Field" class="form-control" placeholder="Field" ng-model="ExplorerV1.data.query.params[$index].field">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3 class="text-center">Request</h3>
+                    <div class="request margin-t-sm">
+                        <code class="full-width">{{ ExplorerV1.data.queryUrl }}</code>
                     </div>
-                    <label for="modifier" class="col-xs-3 control-label text-center margin-t-sm visible-xs">
-                        Modifier:
-                    </label>
-                    <div class="col-sm-3 col-xs-9 margin-t-sm">
-                        <select name="modifier"
-                                ng-model="ExplorerV1.data.query.params[$index].modifier"
-                                class="form-control"
-                                ng-options="mod.value as mod.name for mod in ExplorerV1.data.query.modifiers | showModifier:ExplorerV1.data.query.params[$index].field:ExplorerV1.data.metadata.fields">
-                            <option value="">Modifier</option>
-                        </select>
-                    </div>
-                    <label for="value" class="col-xs-3 control-label text-center margin-t-sm visible-xs">
-                        Value:
-                    </label>
-                    <div class="col-sm-4 col-xs-9 margin-t-sm">
-                        <input class="form-control" ng-show="ExplorerV1.data.query.params[$index].modifier != '<->'" placeholder="Value" ng-model="ExplorerV1.data.query.params[$index].value.left">
-                        <div class="row" ng-show="ExplorerV1.data.query.params[$index].modifier == '<->'">
-                            <div class="col-sm-6">
-                                <input class="form-control" placeholder="Value" ng-model="ExplorerV1.data.query.params[$index].value.left">
-                            </div>
-                            <div class="col-sm-6">
-                                <input class="form-control" placeholder="Value" ng-model="ExplorerV1.data.query.params[$index].value.right">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-1">
-                        <button type="button" class="btn btn-danger pull-right margin-t-sm" ng-click="ExplorerV1.removeParam($index)">
-                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="bg-info" ng-show="ExplorerV1.data.query.params.length < 1">
-                    <p class="text-center pv"><strong>Click the "Add Field" button to get started.</strong></p>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <button ng-click="ExplorerV1.addField()" class="btn btn-success" type="button">
-                            <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Field
-                        </button>
-                    </div>
-                </div>
-                <div ng-show="ExplorerV1.data.query.params.length > 0">
                     <hr>
-                    <h4 class="text-center">Sorting &amp; Pagination</h4>
-                    <div class="form-group">
-                        <label for="limit" class="col-xs-5 col-sm-2 control-label text-center">
-                            Limit:
-                        </label>
-                        <div class="col-sm-2 col-xs-7">
-                            <input id="limit" class="form-control" ng-model="ExplorerV1.limit" placeholder="Limit">
+                    <h3 class="text-center">Build Query</h3>
+                    <form role="form" class="form-horizontal" ng-submit="ExplorerV1.search()">
+                        <h4 class="text-center" ng-show="ExplorerV1.data.query.params.length">Fields</h4>
+                        <div class="form-group" ng-repeat="param in ExplorerV1.data.query.params track by $index">
+                            <label for="Field" class="col-xs-3 control-label text-center margin-t-sm visible-xs">
+                                Field:
+                            </label>
+                            <div class="col-sm-4 col-xs-9 margin-t-sm">
+                                <input id="Field" class="form-control" placeholder="Field" ng-model="ExplorerV1.data.query.params[$index].field">
+                            </div>
+                            <label for="modifier" class="col-xs-3 control-label text-center margin-t-sm visible-xs">
+                                Modifier:
+                            </label>
+                            <div class="col-sm-3 col-xs-9 margin-t-sm">
+                                <select name="modifier"
+                                        ng-model="ExplorerV1.data.query.params[$index].modifier"
+                                        class="form-control"
+                                        ng-options="mod.value as mod.name for mod in ExplorerV1.data.query.modifiers | showModifier:ExplorerV1.data.query.params[$index].field:ExplorerV1.data.metadata.fields">
+                                    <option value="">Modifier</option>
+                                </select>
+                            </div>
+                            <label for="value" class="col-xs-3 control-label text-center margin-t-sm visible-xs">
+                                Value:
+                            </label>
+                            <div class="col-sm-4 col-xs-9 margin-t-sm">
+                                <input class="form-control" ng-show="ExplorerV1.data.query.params[$index].modifier != '<->'" placeholder="Value" ng-model="ExplorerV1.data.query.params[$index].value.left">
+                                <div class="row" ng-show="ExplorerV1.data.query.params[$index].modifier == '<->'">
+                                    <div class="col-sm-6">
+                                        <input class="form-control" placeholder="Value" ng-model="ExplorerV1.data.query.params[$index].value.left">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input class="form-control" placeholder="Value" ng-model="ExplorerV1.data.query.params[$index].value.right">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-danger pull-right margin-t-sm" ng-click="ExplorerV1.removeParam($index)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                            </div>
                         </div>
-                        <label for="offset" class="col-xs-5 col-sm-2 control-label text-center">
-                            Offset:
-                        </label>
-                        <div class="col-sm-2 col-xs-7">
-                            <input id="offset" class="form-control" ng-model="ExplorerV1.offset" placeholder="Offset">
+                        <div class="bg-info" ng-show="ExplorerV1.data.query.params.length < 1">
+                            <p class="text-center pv"><strong>Click the "Add Field" button to get started.</strong></p>
                         </div>
-                        <label for="photo_num" class="col-xs-5 col-sm-2 control-label text-center">
-                            Num Photos:
-                        </label>
-                        <div class="col-sm-2 col-xs-7">
-                            <input id="photo_num" class="form-control" ng-model="ExplorerV1.num_photos" placeholder="# Photos">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button ng-click="ExplorerV1.addField()" class="btn btn-success" type="button">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Field
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="order_by" class="col-xs-5 col-sm-2 control-label text-center">
-                            Order By:
-                        </label>
-                        <div class="col-sm-2 col-xs-7">
-                            <input id="order_by" class="form-control" ng-model="ExplorerV1.orderby" placeholder="Order By">
+                        <div ng-show="ExplorerV1.data.query.params.length > 0">
+                            <hr>
+                            <h4 class="text-center">Sorting &amp; Pagination</h4>
+                            <div class="form-group">
+                                <label for="limit" class="col-xs-5 col-sm-2 control-label text-center">
+                                    Limit:
+                                </label>
+                                <div class="col-sm-2 col-xs-7">
+                                    <input id="limit" class="form-control" ng-model="ExplorerV1.limit" placeholder="Limit">
+                                </div>
+                                <label for="offset" class="col-xs-5 col-sm-2 control-label text-center">
+                                    Offset:
+                                </label>
+                                <div class="col-sm-2 col-xs-7">
+                                    <input id="offset" class="form-control" ng-model="ExplorerV1.offset" placeholder="Offset">
+                                </div>
+                                <label for="photo_num" class="col-xs-5 col-sm-2 control-label text-center">
+                                    Num Photos:
+                                </label>
+                                <div class="col-sm-2 col-xs-7">
+                                    <input id="photo_num" class="form-control" ng-model="ExplorerV1.num_photos" placeholder="# Photos">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="order_by" class="col-xs-5 col-sm-2 control-label text-center">
+                                    Order By:
+                                </label>
+                                <div class="col-sm-2 col-xs-7">
+                                    <input id="order_by" class="form-control" ng-model="ExplorerV1.orderby" placeholder="Order By">
+                                </div>
+                                <label for="sort_order" class="col-xs-5 col-sm-2 control-label text-center">
+                                    Sort Order:
+                                </label>
+                                <div class="col-sm-2 col-xs-7">
+                                    <select id="sort_order" class="form-control"
+                                            ng-model="ExplorerV1.sort_order"
+                                            ng-options="order.value as order.name for order in ExplorerV1.data.query.sort_orders">
+                                        <option value="">Sort Order</option>
+                                    </select>
+                                </div>
+                                <label for="sort_option" class="col-xs-5 col-sm-2 control-label text-center">
+                                    Sort Option:
+                                </label>
+                                <div class="col-sm-2 col-xs-7">
+                                    <select id="sort_option" class="form-control"
+                                            ng-model="ExplorerV1.sort_option"
+                                            ng-options="option.value as option.name for option in ExplorerV1.data.query.sort_options"
+                                    >
+                                        <option value="">Sort Option</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <label for="sort_order" class="col-xs-5 col-sm-2 control-label text-center">
-                            Sort Order:
-                        </label>
-                        <div class="col-sm-2 col-xs-7">
-                            <select id="sort_order" class="form-control"
-                                    ng-model="ExplorerV1.sort_order"
-                                    ng-options="order.value as order.name for order in ExplorerV1.data.query.sort_orders">
-                                <option value="">Sort Order</option>
-                            </select>
+                        <hr>
+                        <div class="form-group margin-t-lg">
+                            <div class="col-sm-12">
+                                <button type="submit" ng-disabled="!ExplorerV1.ready() || ExplorerV1.data.query.fetching" class="btn btn-primary">
+                                    <i class="fa fa-search" aria-hidden="true"></i>&nbsp;Search
+                                </button>
+                            </div>
                         </div>
-                        <label for="sort_option" class="col-xs-5 col-sm-2 control-label text-center">
-                            Sort Option:
-                        </label>
-                        <div class="col-sm-2 col-xs-7">
-                            <select id="sort_option" class="form-control"
-                                    ng-model="ExplorerV1.sort_option"
-                                    ng-options="option.value as option.name for option in ExplorerV1.data.query.sort_options"
-                            >
-                                <option value="">Sort Option</option>
-                            </select>
-                        </div>
-                    </div>
+                    </form>
                 </div>
-                <hr>
-                <div class="form-group margin-t-lg">
-                    <div class="col-sm-12">
-                        <button type="submit" ng-disabled="!ExplorerV1.ready() || ExplorerV1.data.query.fetching" class="btn btn-primary">
-                            <i class="fa fa-search" aria-hidden="true"></i>&nbsp;Search
-                        </button>
-                    </div>
+                <div class="col-sm-6">
+                    <ui-gmap-google-map control="ExplorerV1.data.map.control" center='ExplorerV1.data.map.center' zoom='ExplorerV1.data.map.zoom'>
+                        <ui-gmap-marker ng-repeat="m in ExplorerV1.data.map.markers" models="ExplorerV1.data.map.markers" coords="m.coords" idKey="m.id">
+                            <ui-gmap-window coords="m.coords" show="false" templateUrl="'/templates/_info_window.html'" templateParameter="m">
+                            </ui-gmap-window>
+                        </ui-gmap-marker>
+                    </ui-gmap-google-map>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
     <hr>
