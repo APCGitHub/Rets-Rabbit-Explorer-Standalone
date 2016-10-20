@@ -37,17 +37,26 @@
             .state('app.home', {
                 url: '/explore',
                 controller: 'HomeCtrl as Home',
-                templateUrl: 'templates/landing.html'
+                templateUrl: 'templates/landing.html',
+                data: {
+                    title: 'Welcome'
+                }
             })
             .state('app.explorer-v1', {
                 url: '/explore/v1',
                 controller: 'ExploreV1Ctrl as ExplorerV1',
-                templateUrl: 'templates/v1.html'
+                templateUrl: 'templates/v1.html',
+                data: {
+                    title: 'V1 | Explorer'
+                }
             })
             .state('app.explorer-v2', {
             	url: '/explore/v2',
             	controller: 'ExploreV2Ctrl as Explorer',
-            	templateUrl: 'templates/v2.html'
+            	templateUrl: 'templates/v2.html',
+                data: {
+                    title: 'V2 | Explorer'
+                }
             });
 
         $urlRouterProvider.otherwise('/explore');
