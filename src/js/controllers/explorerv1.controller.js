@@ -8,9 +8,9 @@
         .module('app.controller.explore.v1', [])
         .controller('ExploreV1Ctrl', Controller);
 
-    Controller.$inject = ['$scope', '$timeout', '$document', 'V1QueryFactory', 'ngToast', 'V1ModifiersFactory', 'FieldService', 'MetadataService', 'PropertyFactoryV1', 'KeyStorageService', 'RRAuthFactory'];
+    Controller.$inject = ['$scope', '$timeout', '$document', 'V1QueryFactory', 'ngToast', 'V1ModifiersFactory', 'FieldService', 'MetadataService', 'PropertyFactoryV1', 'KeyStorageService', 'RRAuthFactory', 'uiGmapGoogleMapApi', 'uiGmapIsReady'];
 
-    function Controller($scope, $timeout, $document, V1QueryFactory, ngToast, V1ModifiersFactory, FieldService, MetadataService, PropertyFactoryV1, KeyStorageService, RRAuthFactory) {
+    function Controller($scope, $timeout, $document, V1QueryFactory, ngToast, V1ModifiersFactory, FieldService, MetadataService, PropertyFactoryV1, KeyStorageService, RRAuthFactory, uiGmapGoogleMapApi, uiGmapIsReady) {
         var vm = this;
 
         init();
@@ -82,7 +82,19 @@
                     ]
                 },
                 queries: V1QueryFactory.all(),
-                queryUrl: ''
+                queryUrl: '',
+                map: {
+                    center: {
+                        latitude: 39.9612,
+                        longitude: -82.9988
+                    },
+                    zoom: 11,
+                    drawingManagerOptions: {},
+                    drawingManagerControl: {},
+                    control: {},
+                    bounds: {},
+                    markers: []
+                }
             };
 
             vm.limit = '';
@@ -169,6 +181,14 @@
 
             //do initial query build for the UI
             _queryUrl();
+
+            uiGmapGoogleMapApi.then(function(maps) {
+                vm.data.map.drawingManagerOptions = {
+                    drawingControl: false,
+                };
+
+                vm.data.map.bounds = new google.maps.LatLngBounds();
+            });
         }
 
         /* === METHOD BINDING === */
@@ -255,7 +275,7 @@
                 vm.data.server.fetching = false;
                 if (res.length) {
                     for (var i = 0; i < res.length; i++) {
-                        if (res[i].name === 'Rets Rabbit Test V1') {
+                        if (res[i].name === 'REALCOMP') {
 
                             vm.data.server.hash = res[i].server_hash;
 
@@ -490,18 +510,56 @@
             vm.data.query.results = null;
             vm.data.query.time_elapsed = null;
             vm.data.query.fetching = true;
+            vm.data.map.markers.length = 0;
             $document.find('#query-results').empty();
 
             var start = performance.now();
 
             PropertyFactoryV1.search(vm.data.server.hash, s).then(function (res){
                 var end = performance.now();
-
                 vm.data.query.fetching = false;
                 vm.data.query.time_elapsed = (end-start).toFixed(0);
                 vm.data.query.results = res;//JSON.stringify(res, null, 4);
                 vm.data.query.total_records = res.results.length;
                 $document.find('#query-results').append(renderjson(res));
+
+                for(var i = 0, len = res.results.length; i < len; i++){
+                    var listing = res.results[i], lat = 0, lng = 0;
+
+                    if(listing.lat && listing.long){
+                        lat = listing.lat;
+                        lng = listing.long;
+                    }
+
+                    if(listing.fields.Latitude && listing.fields.Longitude){
+                        lat = listing.fields.Latitude;
+                        lng = listing.fields.Longitude;
+                    }
+
+                    if(lat != 0 && lng != 0){
+                        var marker = {
+                            id: (new Date()).getTime(),
+                            data: {
+                                mls_id: listing.mls_id
+                            },
+                            coords: {
+                                latitude: lat,
+                                longitude: lng
+                            }
+                        };
+
+                        vm.data.map.markers.push(marker);
+
+                        var latlng = new google.maps.LatLng(lat, lng);
+                        vm.data.map.bounds.extend(latlng);
+                    }
+                }
+
+                if(vm.data.map.markers.length){
+                    $timeout(function () {
+                        vm.data.map.control.getGMap().fitBounds(vm.data.map.bounds);
+                    }, 1);
+                }
             }, function (res){
                 console.log(res);
                 vm.data.query.fetching = false;
