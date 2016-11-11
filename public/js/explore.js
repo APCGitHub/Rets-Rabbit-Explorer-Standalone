@@ -920,15 +920,15 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
         // ApiProvider.setClientId("retsrabbit");
         // ApiProvider.setClientSecret("retsrabbit");
 
-        ApiProvider.v1.setBaseUrl('http://retsrabbit.app/');
-        ApiProvider.v1.setClientId('I5u3UIzeLXHMoVmO9aIMCTmXl0LtBrFPwne3gnqj');
-        ApiProvider.v1.setClientSecret('jDwrZSabfEhWKIWjA7ZmCPluBaAzKOforPL3GiSJ');
+        ApiProvider.v1.setBaseUrl('https://stage.retsrabbit.com/');
+        ApiProvider.v1.setClientId('retsrabbit');
+        ApiProvider.v1.setClientSecret('retsrabbit');
         ApiProvider.v1.setStorageKey('access_token_v1');
 
-        ApiProvider.v2.setBaseUrl('http://retsrabbit.app/');
-        ApiProvider.v2.setClientId('I5u3UIzeLXHMoVmO9aIMCTmXl0LtBrFPwne3gnqj');
-        ApiProvider.v2.setClientSecret('jDwrZSabfEhWKIWjA7ZmCPluBaAzKOforPL3GiSJ');
-        ApiProvider.v2.setStorageKey('access_token_v2');
+        ApiProvider.v1.setBaseUrl('https://stage.retsrabbit.com/');
+        ApiProvider.v1.setClientId('retsrabbit');
+        ApiProvider.v1.setClientSecret('retsrabbit');
+        ApiProvider.v1.setStorageKey('access_token_v2');
 
         uiGmapGoogleMapApiProvider.configure({
             key: 'AIzaSyBzsdkBN_oP1rS262mZzEJiJRPrmfQ52LE',
