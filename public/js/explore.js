@@ -887,14 +887,14 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
         // ApiProvider.setClientId("retsrabbit");
         // ApiProvider.setClientSecret("retsrabbit");
 
-        ApiProvider.v1.setBaseUrl('http://retsrabbit.app/');
-        ApiProvider.v1.setClientId('E1bi6hyy7nLxjlicqE2cDhyUykmA11KPoK9cSbr');
-        ApiProvider.v1.setClientSecret('x8EZaK74sYmkQLOk4CJBhwLJP0McajzKro6RY6j');
+        ApiProvider.v1.setBaseUrl('https://stage.retsrabbit.com/');
+        ApiProvider.v1.setClientId('retsrabbit');
+        ApiProvider.v1.setClientSecret('retsrabbit');
         ApiProvider.v1.setStorageKey('access_token_v1');
 
-        ApiProvider.v2.setBaseUrl('http://retsrabbit.app/');
-        ApiProvider.v2.setClientId('E1bi6hyy7nLxjlicqE2cDhyUykmA11KPoK9cSbr');
-        ApiProvider.v2.setClientSecret('x8EZaK74sYmkQLOk4CJBhwLJP0McajzKro6RY6j');
+        ApiProvider.v2.setBaseUrl('https://stage.retsrabbit.com/');
+        ApiProvider.v2.setClientId('retsrabbit');
+        ApiProvider.v2.setClientSecret('retsrabbit');
         ApiProvider.v2.setStorageKey('access_token_v2');
 
         uiGmapGoogleMapApiProvider.configure({
@@ -1045,7 +1045,7 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
             vm.data = {
                 queriesCollapsed: false,
                 api: {
-                    url: 'http://retsrabbit.app/api/'
+                    url: 'https://stage.retsrabbit.com/api/'
                 },
                 metadata: {
                     search: null,
