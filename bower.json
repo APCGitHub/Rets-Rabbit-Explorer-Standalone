@@ -48,9 +48,9 @@
     "bower": "*",
     "install": "^1.0.4",
     "angular-google-maps": "^2.4.0",
-    "rr-api-explorer": "^1.2.2"
+    "rr-api-explorer": "^1.2.27"
   },
   "resolutions": {
-    "angular": "1.5.7"
+    "angular": "1.6.4"
   }
 }
