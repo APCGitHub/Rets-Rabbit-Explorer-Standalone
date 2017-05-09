@@ -925,10 +925,10 @@ c.toDisplay)return c.toDisplay(b,c,d);var e={d:b.getUTCDate(),D:q[d].daysShort[b
         ApiProvider.v1.setClientSecret('retsrabbit');
         ApiProvider.v1.setStorageKey('access_token_v1');
 
-        ApiProvider.v1.setBaseUrl('https://stage.retsrabbit.com/');
-        ApiProvider.v1.setClientId('retsrabbit');
-        ApiProvider.v1.setClientSecret('retsrabbit');
-        ApiProvider.v1.setStorageKey('access_token_v2');
+        ApiProvider.v2.setBaseUrl('https://stage.retsrabbit.com/');
+        ApiProvider.v2.setClientId('retsrabbit');
+        ApiProvider.v2.setClientSecret('retsrabbit');
+        ApiProvider.v2.setStorageKey('access_token_v2');
 
         uiGmapGoogleMapApiProvider.configure({
             key: 'AIzaSyBzsdkBN_oP1rS262mZzEJiJRPrmfQ52LE',
