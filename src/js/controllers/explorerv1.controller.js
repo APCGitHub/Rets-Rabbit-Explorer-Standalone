@@ -8,9 +8,9 @@
         .module('app.controller.explore.v1', [])
         .controller('ExploreV1Ctrl', Controller);
 
-    Controller.$inject = ['$scope', '$timeout', '$document', 'V1QueryFactory', 'ngToast', 'V1ModifiersFactory', 'FieldService', 'MetadataService', 'PropertyFactoryV1', 'KeyStorageService', 'RRAuthFactory', 'uiGmapGoogleMapApi', 'uiGmapIsReady'];
+    Controller.$inject = ['$scope', '$timeout', '$document', 'V1QueryFactory', 'ngToast', 'V1ModifiersFactory', 'FieldService', 'MetadataService', 'PropertyFactoryV1', 'KeyStorageService', 'RRAuthFactory', 'uiGmapGoogleMapApi'];
 
-    function Controller($scope, $timeout, $document, V1QueryFactory, ngToast, V1ModifiersFactory, FieldService, MetadataService, PropertyFactoryV1, KeyStorageService, RRAuthFactory, uiGmapGoogleMapApi, uiGmapIsReady) {
+    function Controller($scope, $timeout, $document, V1QueryFactory, ngToast, V1ModifiersFactory, FieldService, MetadataService, PropertyFactoryV1, KeyStorageService, RRAuthFactory, uiGmapGoogleMapApi) {
         var vm = this;
 
         init();
